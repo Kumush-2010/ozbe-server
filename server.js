@@ -42,9 +42,13 @@ app.get("/", (req, res) => {
   res.redirect("/admin");
 });
 
-app.get("/admin", (req, res) => {
+app.get("/dashboard", (req, res) => {
   return res.render("dashboard", { title: "Admin Panel", layout: false }); // main.hbs layout ichida views/dashboard.hbs yuklanadi
 });
+
+app.get("/admins", (req, res) => {
+  return res.render("admin", { title: "Admins", layout: false });
+})
 
 // Port
 const PORT = process.env.PORT || 5000;
