@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const session = require("express-session");
+const connectDB = require("./config/db");
+connectDB();
 
 const app = express();
 
@@ -42,12 +44,19 @@ app.get("/", (req, res) => {
   res.redirect("/admin");
 });
 
-app.get("/dashboard", (req, res) => {
+app.get("/admin", (req, res) => {
   return res.render("dashboard", { title: "Admin Panel", layout: false }); // main.hbs layout ichida views/dashboard.hbs yuklanadi
 });
 
-app.get("/admins", (req, res) => {
-  return res.render("admin", { title: "Admins", layout: false });
+app.get("/admins", async(req, res) => {
+  try {
+    const response = await fetch('http://127.0.0.1:3000/admins');
+    const data = await response.json();
+    res.render('admin', { admins: data });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Xatolik yuz berdi");
+  }
 })
 
 // Port

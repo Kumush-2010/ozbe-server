@@ -1,11 +1,48 @@
 const Product = require('../models/product');
 const Order = require('../models/order');
-const User = require('../models/user');
+const Admin = require('../models/admin');
+
+exports.allAdmins = async (req, res) => {
+   try {
+            let admins;
+
+            res.status(400).send({
+              message: "Adminlar topilmadi!"
+            })
+    
+            if (req.user.role === "superadmin") {
+                admins = await Admin.find();
+            } else {
+                admins = await Admin.find({ _id: req.user.id });
+            }
+    
+            return res.status(200).json({ message: "Adminlar", admins });
+        } catch (error) {
+            console.error("Adminlarni olishda xatolik:", error);
+            return res.status(500).json({ error: "Server xatosi yuz berdi." });
+        }
+}
+
+
+exports.adminCreate = async (req, res) => {
+
+}
+
+
+exports.adminEdit = async (req, res) => {
+
+}
+
+
+exports.adminDelete = async (req, res) => {
+
+}
+
 
 exports.getAdminStats = async (req, res) => {
   try {
     const productCount = await Product.countDocuments();
-    const userCount = await User.countDocuments();
+    const adminCount = await Admin.countDocuments();
     const orderCount = await Order.countDocuments();
 
     const orders = await Order.find({ status: 'paid' });
@@ -34,7 +71,7 @@ exports.getAdminStats = async (req, res) => {
 
     res.status(200).json({
       productCount,
-      userCount,
+      adminCount,
       orderCount,
       totalRevenue,
       recentOrders
