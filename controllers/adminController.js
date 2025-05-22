@@ -1,6 +1,7 @@
 const Product = require('../models/product');
 const Order = require('../models/order');
 const Admin = require('../models/admin');
+const bcrypt = require("bcrypt")
 
 exports.allAdmins = async (req, res) => {
    try {
@@ -25,7 +26,35 @@ exports.allAdmins = async (req, res) => {
 
 
 exports.adminCreate = async (req, res) => {
+ try {
+   console.log("💡 Admin yaratish ishladi", req.body);
+    const { adminname, birth, jins, phone, email, image, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
+    const existing = await Admin.findOne({ email });
+    if (existing) return res.status(400).json({ message: 'Email already exists' });
+
+ const newAdmin = new Admin({
+     adminname,
+      birth,
+      jins,
+      phone,
+      email,
+      role: role || "admin",
+      password: hashedPassword,
+      image: image || "",
+      lastLogin: null
+    });
+
+    await newAdmin.save();
+
+    return res
+            .status(200)
+            .json({ message: `${role} muvaffaqiyatli yaratildi` });
+  } catch (error) {
+    console.error('Error creating admin:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
 }
 
 

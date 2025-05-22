@@ -10,57 +10,66 @@ const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const session = require("express-session");
 const connectDB = require("./config/db");
+const apiRoutes = require("./app"); // bu sizning API marshrutlaringizni o‘z ichiga oladi
+
 connectDB();
 
-const app = express();
+const app = express(); // faqat bitta express ilova bo‘ladi
 
 // Handlebars sozlamalari
 const hbs = create({
-  defaultLayout: "main", // layout fayli: main.hbs
+  defaultLayout: "main",
   extname: "hbs",
   handlebars: allowInsecurePrototypeAccess(Handlebars),
 });
 
-// app.engine("hbs", hbs.engine);
-// app.set("view engine", "hbs");
-// app.set("views", path.join(__dirname, "adminpage")); // sahifalar shu yerda
-
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
-app.set("views", "./adminpage/views");
+app.set("views", "./adminpage/views"); // hbs fayllaringiz shu joyda
 
-// Middlewares
+// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
 app.use(cookieParser());
 app.use(session({ secret: "Admin", resave: false, saveUninitialized: false }));
 app.use(flash());
+app.use(express.static("adminpage")); // CSS, JS, rasmlar
 
-app.use(express.static("adminpage"));
+// Uploads statik fayllar (API uchun)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
+// Frontend routes (hbs sahifalar)
 app.get("/", (req, res) => {
   res.redirect("/admin");
 });
 
 app.get("/admin", (req, res) => {
-  return res.render("dashboard", { title: "Admin Panel", layout: false }); // main.hbs layout ichida views/dashboard.hbs yuklanadi
+  return res.render("dashboard", { title: "Admin Panel", layout: false });
 });
 
 app.get("/admins", async(req, res) => {
-  try {
-    const response = await fetch('http://127.0.0.1:3000/admins');
-    const data = await response.json();
-    res.render('admin', { admins: data });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Xatolik yuz berdi");
-  }
+  // try {
+  //   const response = await fetch('http://127.0.0.1:3000/admins');
+  //   const data = await response.json();
+  //   res.render('admin', { admins: data });
+  // } catch (err) {
+  //   console.log(err);
+  //   res.status(500).send("Xatolik yuz berdi");
+  // }
+   
+  return res.render("admin", { title: "Admins", layout: false });
 })
 
-// Port
+
+// API routes
+app.use("/api", apiRoutes); // bu orqali /api/auth, /api/products va boshqalar ishlaydi
+
+// Server ishga tushurish
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server ${PORT}-portda ishlamoqda`);
 });
+
+
+
+
