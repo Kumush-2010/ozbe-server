@@ -236,7 +236,7 @@
             <input type="text" placeholder="Qidiruv..." />
           </div>
           <div style="padding-right: 10%; width: 30%">
-            <button class="create-admin-btn" onclick="openCreateModal()">
+            <button class="create-admin-btn" onclick="openCreateModal()" id="openModalBtn">
               Yangi admin qo‘shish
             </button>
           </div>
@@ -453,52 +453,98 @@
 
         <div class="modal-buttons">
           <button class="save-btn" id="saveBtn">Saqlash</button>
-          <button class="close-btn" id="closeBtn">Bekor qilish</button>
+          {{!-- <button class="close-btn" id="closeBtn">Bekor qilish</button> --}}
         </div>
       </div>
     </div>
 
     <!-- Create Modal -->
-    <div class="modal-overlay" id="createModalOverlay">
+    
+<div class="modal-overlay" id="adminModal">
       <div class="modal">
+            <span class="close">&times;</span>
         <h2>Yangi admin qo‘shish</h2>
+<form id="adminForm" action="/api/admin/create" method="POST"></form>
+  <label>Ism: <input type="text" name="name" required></label><br>
 
-        <label>Ism:</label>
-        <input type="text" id="createName" />
+  <label>Tug‘ilgan sana: <input type="date" name="birth" required></label><br>
 
-        <label>Email:</label>
-        <input type="email" id="createEmail" />
+  <label>Email: <input type="email" name="email" required></label><br>
 
-        <label>Telefon:</label>
-        <input type="text" id="createPhone" />
 
-        <label>Rol:</label>
-        <select id="createRole">
-          <option value="super admin">super admin</option>
-          <option value="admin">admin</option>
-        </select>
+  <label>Telefon: <input type="text" name="phone" required></label><br>
 
-        <label>Oxirgi kirish (ixtiyoriy):</label>
-        <input type="text" id="createLogin" />
+   <label>Jinsi:
+    <select name="jins" required>
+      <option value="male">Erkak</option>
+      <option value="female">Ayol</option>
+    </select>
+   </label><br>
 
-        <div class="modal-buttons">
-          <button class="save-btn" id="createSaveBtn">Qo‘shish</button>
+  <label>Rasm URL: <input type="text" name="image"></label><br>
+
+  <label>Parol: <input type="password" name="password" required></label><br>
+
+  <label>Rol:
+    <select name="role" required>
+       <option value="super admin">super admin</option>
+      <option value="admin">admin</option>
+    </select>
+  </label><br>
+
+        {{!-- <div class="modal-buttons">
+          <button type="submit" class="save-btn" id="createSaveBtn">Qo‘shish</button>
           <button class="close-btn" id="createCloseBtn">Bekor qilish</button>
-        </div>
+        </div> --}}
+        
+  <button type="submit">Admin yaratish</button>
+     </form>
+      <p id="message"></p>
       </div>
     </div>
+ 
 
+  </body>
 
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="../js/test.js"></script>
+    {{!-- <script src="../js/test.js"></script> --}}
 
     <script src="../js/admin.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     {{!-- <script src="../js/orders.js"></script> --}}
-  </body>
+  <script>
+  const modal = document.getElementById("adminModal");
+  const openModalBtn = document.getElementById("openModalBtn");
+  const closeBtn = document.querySelector(".close");
+
+  openModalBtn.onclick = () => modal.style.display = "block";
+  closeBtn.onclick = () => modal.style.display = "none";
+  window.onclick = (e) => {
+    if (e.target === modal) modal.style.display = "none";
+  };
+
+  // Admin yaratish AJAX orqali
+ document.querySelector("#adminForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+  const data = Object.fromEntries(formData);
+
+  const response = await fetch("/api/admin/create", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  const result = await response.json();
+  console.log(result);
+});
+</script>
+
 </html>
 
 
