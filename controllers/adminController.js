@@ -5,17 +5,11 @@ const bcrypt = require("bcrypt")
 
 exports.allAdmins = async (req, res) => {
    try {
-            let admins;
+     const admins = await Admin.find()
 
             res.status(400).send({
               message: "Adminlar topilmadi!"
             })
-    
-            if (req.user.role === "superadmin") {
-                admins = await Admin.find();
-            } else {
-                admins = await Admin.find({ _id: req.user.id });
-            }
     
             return res.status(200).json({ message: "Adminlar", admins });
         } catch (error) {
@@ -28,7 +22,7 @@ exports.allAdmins = async (req, res) => {
 exports.adminCreate = async (req, res) => {
  try {
    console.log("💡 Admin yaratish ishladi", req.body);
-    const { adminname, birth, jins, phone, email, image, password } = req.body;
+    const { adminname, birth, jins, phone, email, image, password, role } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const existing = await Admin.findOne({ email });

@@ -3,6 +3,19 @@ const router = express.Router();
 // const { authMiddleware, adminMiddleware } = require("../middleware/auth");
 // const { getAdminStats } = require("../controllers/adminController.js");
 const { adminCreate } = require('../controllers/adminController.js');
+const Admin = require('../models/admin.js');
+
+router.get('/', async (req, res) => {
+  try {
+    const admins = await Admin.find();
+    console.log("Admins:", admins); // bu yerda ma'lumot chiqyaptimi?
+    res.render('admins', { admins });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Xatolik');
+  }
+});
+
 
 router.get('/create', (req, res) => {
   res.render('admin-create'); // hbs fayl nomi

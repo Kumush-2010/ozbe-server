@@ -29,7 +29,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/orders', orderRoutes);
 
 
-app.use('/api/admin', adminRoutes); 
+app.use('/admin', adminRoutes); 
 
 
 module.exports = app;
