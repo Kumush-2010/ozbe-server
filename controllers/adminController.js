@@ -7,11 +7,14 @@ exports.allAdmins = async (req, res) => {
    try {
      const admins = await Admin.find()
 
-            res.status(400).send({
+     if(!admins){
+      return res.status(400).send({
               message: "Adminlar topilmadi!"
             })
-    
-            return res.status(200).json({ message: "Adminlar", admins });
+     } else {
+       return res.status(200).json({ message: "Adminlar", admins });
+     }
+           
         } catch (error) {
             console.error("Adminlarni olishda xatolik:", error);
             return res.status(500).json({ error: "Server xatosi yuz berdi." });
