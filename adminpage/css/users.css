@@ -364,7 +364,7 @@ tr:last-child td {
 .modal {
     background-color: white;
     max-width: 500px;
-    margin: 100px auto;
+    margin: 40px auto;
     padding: 25px;
     border-radius: 10px;
     position: relative;
@@ -406,9 +406,9 @@ tr:last-child td {
     color: white;
 }
 
-.close-btn {
-    background-color: #dc3545;
-    color: white;
+.close {
+   margin-left: 430px;
+   font-size: 30px;
 }
 
 .order-info {

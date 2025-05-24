@@ -1,102 +1,161 @@
 
-const selectAll = document.getElementById('selectAll');
-const checkbox = document.querySelectorAll('.checkbox');
+// const selectAll = document.getElementById('selectAll');
+// const checkbox = document.querySelectorAll('.checkbox');
 
-selectAll.addEventListener('change', function () {
-  checkbox.forEach(checkbox => {
-    checkbox.checked = selectAll.checked;
+// selectAll.addEventListener('change', function () {
+//   checkbox.forEach(checkbox => {
+//     checkbox.checked = selectAll.checked;
+//   });
+// });
+
+//   // "Select All" checkboxni boshqarish
+//   const selectAllCheckbox = document.getElementById('selectAll');
+//   const individualCheckboxes = document.querySelectorAll('.checkbox');
+
+//   selectAllCheckbox.addEventListener('change', function() {
+//       individualCheckboxes.forEach(checkbox => {
+//           checkbox.checked = selectAllCheckbox.checked;
+//       });
+//   });
+
+//   // Har bir delete tugmasi uchun tasdiqlash va o'chirish
+//   function confirmDelete(button) {
+//       const confirmation = confirm("Are you sure you want to delete this item?");
+      
+//       if (confirmation) {
+//           const row = button.closest('tr'); // Eng yaqin tr elementini topib o'chiradi
+//           row.remove();
+//       }
+//   }
+
+
+const modal = document.getElementById("adminModal"); 
+    const openModalBtn = document.getElementById("openModalBtn"); 
+    const closeBtn = document.querySelector(".close"); 
+    openModalBtn.onclick = () => modal.style.display = "block"; 
+    closeBtn.onclick = () => modal.style.display = "none"; 
+    window.onclick = (e) => { if (e.target === modal)
+    modal.style.display = "none"; }; // Admin yaratish AJAX orqali
+
+
+    // search
+  document.getElementById('searchInput')?.addEventListener('input', function () {
+  const query = this.value.toLowerCase();
+  const rows = document.querySelectorAll('#adminTableBody tr');
+
+  rows.forEach(row => {
+    const name = row.querySelector('.author-name')?.textContent.toLowerCase() || '';
+    const email = row.querySelector('.author-email')?.textContent.toLowerCase() || '';
+
+    const match = name.includes(query) || email.includes(query);
+    row.style.display = match ? '' : 'none';
   });
 });
 
 
-  // Qidiruv funksiyasi
-  const searchInput = document.querySelector('.search-input input');
-  const tableRows = document.querySelectorAll('table tbody tr');
+// admins
+  fetch('/api/admin')
+  .then(res => res.json())
+  .then(data => {
+    const tbody = document.getElementById('adminTableBody');
+    tbody.innerHTML = '';
 
-  searchInput.addEventListener('input', function() {
-      const searchTerm = searchInput.value.toLowerCase();
-      
-      tableRows.forEach(row => {
-          const nameCell = row.querySelector('.author-name').textContent.toLowerCase();
-          const emailCell = row.querySelector('.author-email').textContent.toLowerCase();
-          
-          if (nameCell.includes(searchTerm) || emailCell.includes(searchTerm)) {
-              row.style.display = '';
-          } else {
-              row.style.display = 'none';
-          }
-      });
-  });
+    data.admins.map(admin => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+       <tr>
+              <div class="item">
+                <td>
+                  <div class="author-info">
+                    <div class="avatar">${admin.adminname?.slice(0, 2).toUpperCase()}</div>
+                  </div>
+                </td>
+                <td>                    
+                    <div>
+                      <div class="author-name">${admin.adminname}</div>
+                    </div>
+                </td>
+                <td><div class="author-email">${admin.email}</div></td>
+                <td>${admin.phone || 'Noma’lum'}</td>
+                <td><span class="status status-online">${admin.role}</span></td>
+                <td>${admin.lastLogin || 'Noma’lum'}</td>
+                <td>
+                  <div class="action-buttons">
+                    <button class="btn btn-edit" onclick="editUser('${admin._id}')">
+                      <i class="fas fa-edit"></i>
+                      Edit
+                    </button>
+                    <button
+                      class="btn btn-delete"
+                      onclick="confirmDelete('${admin._id}')"
+                    >
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </div>
+            </tr>
+      `;
+      tbody.appendChild(tr);
+    });
+  })
+  .catch(err => console.error('Xatolik:', err));
 
-  // "Select All" checkboxni boshqarish
-  const selectAllCheckbox = document.getElementById('selectAll');
-  const individualCheckboxes = document.querySelectorAll('.checkbox');
 
-  selectAllCheckbox.addEventListener('change', function() {
-      individualCheckboxes.forEach(checkbox => {
-          checkbox.checked = selectAllCheckbox.checked;
-      });
-  });
-
-  // Har bir delete tugmasi uchun tasdiqlash va o'chirish
-  function confirmDelete(button) {
-      const confirmation = confirm("Are you sure you want to delete this item?");
-      
-      if (confirmation) {
-          const row = button.closest('tr'); // Eng yaqin tr elementini topib o'chiradi
-          row.remove();
-      }
-  }
-
-  // Delete tugmasini dinamik tarzda qo'shish
-  document.querySelectorAll('.btn-delete').forEach(button => {
-      button.addEventListener('click', function() {
-          confirmDelete(button);
-      });
-  });
-
-  const modalOverlay = document.getElementById("modalOverlay");
-  // const closeBtn = document.getElementById("closeBtn");
-  const saveBtn = document.getElementById("saveBtn");
-
-  const inputName = document.getElementById("inputName");
-  const inputEmail = document.getElementById("inputEmail");
-  const inputPhone = document.getElementById("inputPhone");
-  const inputRole = document.getElementById("inputRole");
-  const inputLogin = document.getElementById("inputLogin");
-
-  // Edit button click handler
+    // admin edit
   function editUser(button) {
-    const row = button.closest("tr");
-    const name = row.querySelector(".author-name").textContent.trim();
-    const email = row.querySelector(".author-email").textContent.trim();
-    const phone = row.querySelector(".phone") ? row.querySelector(".phone").value : row.cells[3].textContent.trim();
-    const role = row.querySelector(".status").textContent.trim();
-    const login = row.querySelector(".last-login") ? row.querySelector(".last-login").value : row.cells[5].textContent.trim();
+    console.log("Tugma: ", button);
+  const row = button.closest('td');
+  const email = row.querySelector('.author-email')?.textContent.trim();
 
-    inputName.value = name;
-    inputEmail.value = email;
-    inputPhone.value = phone;
-    inputRole.value = role;
-    inputLogin.value = login;
+  fetch(`/api/admins/email/${encodeURIComponent(email)}`)
+    .then(res => res.json())
+    .then(admin => {
+      // Modalni ochish
+     document.getElementById('modalOverlay').style.display = 'flex';
 
-    modalOverlay.style.display = "block";
-  }
 
-  // Close modal
-  // closeBtn.onclick = () => {
-  //   modalOverlay.style.display = "none";
-  // };
+      // Formani to‘ldirish
+      document.getElementById('inputName').value = admin.name || '';
+      document.getElementById('inputEmail').value = admin.email || '';
+      document.getElementById('inputPhone').value = admin.phone || '';
+      document.getElementById('inputRole').value = admin.role || '';
+      document.getElementById('inputLogin').value = admin.lastLogin || '';
 
-  // // Save changes (You can replace this with real saving logic)
-  // saveBtn.onclick = () => {
-  //   alert("Ma'lumotlar saqlandi (yoki serverga jo‘natiladi)");
-  //   modalOverlay.style.display = "none";
-  // };
+      // ID ni saqlash (keyin PUT uchun kerak)
+      document.getElementById('saveBtn').dataset.id = admin._id;
+    })
+    .catch(err => {
+      console.error('Xatolik:', err);
+      alert("Admin ma'lumotlarini olishda xatolik yuz berdi");
+    });
+}
+document.getElementById('saveBtn')?.addEventListener('click', function () {
+  const id = this.dataset.id;
 
-  // Outside click to close
-window.onclick = (e) => {
-  if (e.target == modalOverlay) {
-    modalOverlay.style.display = "none";
-  }
-};
+  const updatedAdmin = {
+    name: document.getElementById('inputName').value,
+    email: document.getElementById('inputEmail').value,
+    phone: document.getElementById('inputPhone').value,
+    role: document.getElementById('inputRole').value,
+    lastLogin: document.getElementById('inputLogin').value
+  };
+
+  // saveBtn
+  fetch(`/api/admins/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedAdmin)
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert("Ma'lumot muvaffaqiyatli yangilandi!");
+      document.getElementById('modalOverlay').style.display = 'none';
+      location.reload(); // sahifani yangilash
+    })
+    .catch(err => {
+      console.error('Yangilashda xatolik:', err);
+      alert('Yangilashda muammo yuz berdi');
+    });
+});
+
