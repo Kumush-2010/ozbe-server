@@ -306,7 +306,7 @@
     </section>
 
     <!-- Edit Modal -->
-    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-overlay" id="modalOverlay">
       <div class="modal">
         <h2>Admin ma'lumotlarini yangilash</h2>
         <label>Ism:</label>
@@ -320,26 +320,19 @@
 
         <label>Rol:</label>
         <select id="inputRole">
-          <option value="superadmin">super admin</option>
+          <option value="super admin">super admin</option>
           <option value="admin">admin</option>
         </select>
 
         <label>Oxirgi kirish:</label>
         <input type="text" id="inputLogin" />
 
-      <td>
-        <div class="action-buttons">
-           <button class="btn btn-edit" onclick="editUser(this)">
-            <i class="fas fa-edit"></i> Edit
-            </button>
-          <button class="btn btn-delete" onclick="confirmDelete(this)">
-        <i class="fas fa-trash"></i>
-    </button>
-  </div>
-      </td>
+        <div class="modal-buttons">
+          <button class="save-btn" id="saveBtn">Saqlash</button>
+          <button class="close-btn" id="closeBtn">Bekor qilish</button>
+        </div>
       </div>
     </div>
-
     <!-- Create Modal -->
 
     <div class="modal-overlay" id="adminModal">

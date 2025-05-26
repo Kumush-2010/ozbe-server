@@ -53,48 +53,40 @@ const modal = document.getElementById("adminModal");
 });
 
 
-// admins
-  fetch('/api/admin')
+fetch('/api/admin')
   .then(res => res.json())
   .then(data => {
     const tbody = document.getElementById('adminTableBody');
-    tbody.innerHTML = '';
+    tbody.innerHTML = ''; // avval tozalaymiz
 
-    data.admins.map(admin => {
+    data.admins.forEach(admin => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-       <tr>
-              <div class="item">
-                <td>
-                  <div class="author-info">
-                    <div class="avatar">${admin.adminname?.slice(0, 2).toUpperCase()}</div>
-                  </div>
-                </td>
-                <td>                    
-                    <div>
-                      <div class="author-name">${admin.adminname}</div>
-                    </div>
-                </td>
-                <td><div class="author-email">${admin.email}</div></td>
-                <td>${admin.phone || 'Noma’lum'}</td>
-                <td><span class="status status-online">${admin.role}</span></td>
-                <td>${admin.lastLogin || 'Noma’lum'}</td>
-                <td>
-                  <div class="action-buttons">
-                    <button class="btn btn-edit" onclick="editUser('${admin._id}')">
-                      <i class="fas fa-edit"></i>
-                      Edit
-                    </button>
-                    <button
-                      class="btn btn-delete"
-                      onclick="confirmDelete('${admin._id}')"
-                    >
-                      <i class="fas fa-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </div>
-            </tr>
+        <td>
+          <div class="author-info">
+            <div class="avatar">${admin.adminname?.slice(0, 2).toUpperCase()}</div>
+          </div>
+        </td>
+        <td>
+          <div class="author-name">${admin.adminname}</div>
+        </td>
+        <td>
+          <div class="author-email">${admin.email}</div>
+        </td>
+        <td>${admin.phone || 'Noma’lum'}</td>
+        <td><span class="status status-online">${admin.role}</span></td>
+        <td>${admin.lastLogin || 'Noma’lum'}</td>
+        <td>
+          <div class="action-buttons">
+            <!-- MUHIM: shu yerda ID emas, this uzatilyapti -->
+            <button class="btn btn-edit" data-id="${admin._id}" onclick="editUser(this)">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="btn btn-delete" onclick="confirmDelete('${admin._id}')">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </td>
       `;
       tbody.appendChild(tr);
     });
@@ -102,60 +94,71 @@ const modal = document.getElementById("adminModal");
   .catch(err => console.error('Xatolik:', err));
 
 
-    // admin edit
-  function editUser(button) {
-    console.log("Tugma: ", button);
-  const row = button.closest('td');
-  const email = row.querySelector('.author-email')?.textContent.trim();
+function editUser(button) {
+  // 1) Tugma ustidagi <tr> elementni topamiz
+  const row = button.closest('tr');
+  if (!row) {
+    console.error("Qator (tr) topilmadi");
+    return;
+  }
 
-  fetch(`/api/admins/email/${encodeURIComponent(email)}`)
-    .then(res => res.json())
-    .then(admin => {
-      // Modalni ochish
-     document.getElementById('modalOverlay').style.display = 'flex';
+  // 2) Jadvaldan ma'lumotlarni olamiz
+  const nameEl  = row.querySelector('.author-name');
+  const emailEl = row.querySelector('.author-email');
+  const phone   = row.children[3]?.textContent.trim() || '';
+  const roleEl  = row.querySelector('.status');
+  const login   = row.children[5]?.textContent.trim() || '';
+  const id      = button.dataset.id; // data-id’dan
 
+  // 3) Modalni ochamiz
+  const overlay = document.getElementById('modalOverlay');
+  overlay.style.display = 'flex';
 
-      // Formani to‘ldirish
-      document.getElementById('inputName').value = admin.name || '';
-      document.getElementById('inputEmail').value = admin.email || '';
-      document.getElementById('inputPhone').value = admin.phone || '';
-      document.getElementById('inputRole').value = admin.role || '';
-      document.getElementById('inputLogin').value = admin.lastLogin || '';
+  // 4) Inputlarni to‘ldiramiz
+  document.getElementById('inputName').value  = nameEl?.textContent.trim() || '';
+  document.getElementById('inputEmail').value = emailEl?.textContent.trim() || '';
+  document.getElementById('inputPhone').value = phone;
+  document.getElementById('inputRole').value  = roleEl?.textContent.trim() || '';
+  document.getElementById('inputLogin').value = login;
 
-      // ID ni saqlash (keyin PUT uchun kerak)
-      document.getElementById('saveBtn').dataset.id = admin._id;
-    })
-    .catch(err => {
-      console.error('Xatolik:', err);
-      alert("Admin ma'lumotlarini olishda xatolik yuz berdi");
-    });
+  // 5) Save tugmasiga id o‘rnatamiz
+  document.getElementById('saveBtn').dataset.id = id;
 }
-document.getElementById('saveBtn')?.addEventListener('click', function () {
+
+
+document.getElementById('saveBtn')?.addEventListener('click', function (e) {
+  e.preventDefault();
   const id = this.dataset.id;
+  if (!id) {
+    alert("ID topilmadi");
+    return;
+  }
 
   const updatedAdmin = {
-    name: document.getElementById('inputName').value,
-    email: document.getElementById('inputEmail').value,
-    phone: document.getElementById('inputPhone').value,
-    role: document.getElementById('inputRole').value,
-    lastLogin: document.getElementById('inputLogin').value
+    adminname: document.getElementById('inputName').value,
+    email:     document.getElementById('inputEmail').value,
+    phone:     document.getElementById('inputPhone').value,
+    role:      document.getElementById('inputRole').value,
+    lastLogin: document.getElementById('inputLogin').value,
   };
 
-  // saveBtn
-  fetch(`/api/admins/${id}`, {
+  fetch(`/api/admins/${encodeURIComponent(id)}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updatedAdmin)
   })
-    .then(res => res.json())
-    .then(data => {
+    .then(res => {
+      if (!res.ok) throw new Error(res.statusText);
+      return res.json();
+    })
+    .then(() => {
       alert("Ma'lumot muvaffaqiyatli yangilandi!");
       document.getElementById('modalOverlay').style.display = 'none';
-      location.reload(); // sahifani yangilash
+      location.reload();
     })
     .catch(err => {
-      console.error('Yangilashda xatolik:', err);
-      alert('Yangilashda muammo yuz berdi');
+      console.error('Yangilash xatosi:', err);
+      alert("Yangilashda muammo yuz berdi");
     });
 });
 
