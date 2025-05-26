@@ -4,10 +4,6 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const path = require('path');
 
-dotenv.config();
-connectDB();
-
-
 const authRoutes = require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const productRoutes = require('./routes/productRoutes');

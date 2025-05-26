@@ -10,7 +10,7 @@ const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
 const session = require("express-session");
 const connectDB = require("./config/db");
-const apiRoutes = require("./app"); // bu sizning API marshrutlaringizni o‘z ichiga oladi
+const apiRoutes = require("./app");
 
 connectDB();
 
@@ -33,7 +33,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({ secret: "Admin", resave: false, saveUninitialized: false }));
 app.use(flash());
-app.use(express.static("adminpage")); // CSS, JS, rasmlar
+app.use(express.static("adminpage")); 
 
 // Uploads statik fayllar (API uchun)
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -47,22 +47,13 @@ app.get("/admin", (req, res) => {
   return res.render("dashboard", { title: "Admin Panel", layout: false });
 });
 
-app.get("/admins", async(req, res) => {
-  // try {
-  //   const response = await fetch('http://127.0.0.1:3000/admins');
-  //   const data = await response.json();
-  //   res.render('admin', { admins: data });
-  // } catch (err) {
-  //   console.log(err);
-  //   res.status(500).send("Xatolik yuz berdi");
-  // }
-   
+app.get("/admins", async(req, res) => {  
   return res.render("admin", { title: "Admins", layout: false });
 })
 
 
 // API routes
-app.use("/api", apiRoutes); // bu orqali /api/auth, /api/products va boshqalar ishlaydi
+app.use("/api", apiRoutes);
 
 // Server ishga tushurish
 const PORT = process.env.PORT || 5000;

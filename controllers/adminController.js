@@ -56,7 +56,37 @@ exports.adminCreate = async (req, res) => {
 
 
 exports.adminEdit = async (req, res) => {
+ try {
+        const { id } = req.params;
+        const admin = await Admin.findById(id);
 
+        if (!admin) {
+            return res.status(404).json({ error: "Admin topilmadi." });
+        }
+
+        if (req.user.role !== "superadmin" && req.user.id !== id) {
+            return res.status(403).json({ error: "Sizga ruxsat yo‘q!" });
+        }
+
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        const { email, adminName, password } = req.body;
+        const updateData = { adminName, email };
+
+        if (password) {
+            updateData.password = await bcrypt.hash(password, 10);
+        }
+
+        const updatedAdmin = await Admin.findByIdAndUpdate(id, updateData, { new: true });
+
+        return res.status(200).json({ message: "Admin muvaffaqiyatli yangilandi", data: updatedAdmin });
+    } catch (error) {
+        console.error("Adminni yangilashda xatolik:", error);
+        return res.status(500).json({ error: "Server xatosi yuz berdi." });
+    }
 }
 
 
