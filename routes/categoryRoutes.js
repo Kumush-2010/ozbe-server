@@ -1,16 +1,31 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   createCategory,
   getAllCategories,
   updateCategory,
   deleteCategory,
-} = require('../controllers/categoryController');
-const { authMiddleware, allowRoles } = require('../middleware/authMiddleware');
+} = require("../controllers/categoryController");
+const {
+  authMiddleware
+} = require("../middleware/admin-access.middleware");
+const { roleAccessMiddleware } = require("../middleware/role-access.middleware.js")
 
-router.post('/', authMiddleware, allowRoles('admin', 'superadmin'), createCategory);
-router.get('/', getAllCategories);
-router.put('/:id', authMiddleware, allowRoles('admin', 'superadmin'), updateCategory);
-router.delete('/:id', authMiddleware, allowRoles('admin', 'superadmin'), deleteCategory);
+router.post(
+  "/",
+  roleAccessMiddleware(["superadmin", "admin"]),
+  createCategory
+);
+router.get("/", getAllCategories);
+router.put(
+  "/:id",
+  roleAccessMiddleware(["superadmin", "admin"]),
+  updateCategory
+);
+router.delete(
+  "/:id",
+  roleAccessMiddleware(["superadmin", 'admin']),
+  deleteCategory
+);
 
 module.exports = router;

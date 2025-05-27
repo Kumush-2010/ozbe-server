@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   createOrder,
@@ -7,22 +7,34 @@ const {
   getAllOrders,
   updateOrderStatus,
   updatePaymentStatus,
-  payForOrder
-} = require('../controllers/orderController');
-const { authMiddleware, allowRoles } = require('../middleware/authMiddleware');
+  payForOrder,
+} = require("../controllers/orderController");
 
+const { roleAccessMiddleware } = require("../middleware/role-access.middleware.js")
 
 // Auth user
-router.post('/', authMiddleware, createOrder);
-router.get('/my', authMiddleware, getMyOrders);
-router.get('/:id', authMiddleware, getOrderById);
+router.post("/",  createOrder);
+router.get("/my",  getMyOrders);
+router.get("/:id",  getOrderById);
 // Foydalanuvchi: to'lov qilish
-router.post('/:orderId/pay', authMiddleware, payForOrder);
+router.post("/:orderId/pay",  payForOrder);
 
 // Admin
-router.get('/', authMiddleware, allowRoles('admin', 'superadmin'), getAllOrders);
-router.put('/:id/status', authMiddleware, allowRoles('admin', 'superadmin'), updateOrderStatus);
+router.get(
+  "/",
+   roleAccessMiddleware(["superadmin", "admin"]),
+  getAllOrders
+);
+router.put(
+  "/:id/status",
+   roleAccessMiddleware(["superadmin", "admin"]),
+  updateOrderStatus
+);
 // Admin: to‘lov holatini o‘zgartirish
-router.put('/:id/payment-status', authMiddleware, allowRoles('admin', 'superadmin'), updatePaymentStatus);
+router.put(
+  "/:id/payment-status",
+   roleAccessMiddleware(["superadmin", "admin"]),
+  updatePaymentStatus
+);
 
 module.exports = router;

@@ -26,6 +26,8 @@ const hbs = create({
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set("views", "./adminpage/views"); // hbs fayllaringiz shu joyda
+// app.set('views', path.join(__dirname, 'adminpage', 'views'));
+
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -43,6 +45,10 @@ app.get("/", (req, res) => {
   res.redirect("/admin");
 });
 
+app.get('/api/admin/login', (req, res) => {
+    res.render('login', { layout: false });
+});
+
 app.get("/admin", (req, res) => {
   return res.render("dashboard", { title: "Admin Panel", layout: false });
 });
@@ -51,6 +57,9 @@ app.get("/admins", async(req, res) => {
   return res.render("admin", { title: "Admins", layout: false });
 })
 
+app.get("/users", async(req, res) => {  
+  return res.render("users", { title: "Users", layout: false });
+})
 
 // API routes
 app.use("/api", apiRoutes);

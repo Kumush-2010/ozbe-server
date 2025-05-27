@@ -1,14 +1,14 @@
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-
+const User = require("../models/user");
+const Admin = require("../models/admin");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 // JWT token yaratish
 const generateToken = (user) => {
   return jwt.sign(
     { id: user._id, email: user.email, role: user.role },
     process.env.JWT_SECRET,
-    { expiresIn: '7d' }
+    { expiresIn: "2d" }
   );
 };
 
@@ -19,7 +19,8 @@ exports.register = async (req, res) => {
 
     // Email bandligini tekshirish
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: 'Email allaqachon band' });
+    if (existingUser)
+      return res.status(400).json({ message: "Email allaqachon band" });
 
     const user = await User.create({ name, email, password });
     const token = generateToken(user);
@@ -29,40 +30,50 @@ exports.register = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role
+        role: user.role,
       },
       token,
     });
   } catch (err) {
-    res.status(500).json({ message: 'Ro‘yxatdan o‘tishda xatolik' });
+    res.status(500).json({ message: "Ro‘yxatdan o‘tishda xatolik" });
   }
 };
 
 // POST /api/auth/login
 exports.login = async (req, res) => {
   try {
-    const { phone, password } = req.body;
+    const { email, password } = req.body;
 
     // Foydalanuvchi borligini tekshirish
-    const user = await User.findOne({ phone });
-    if (!user) return res.status(400).json({ message: 'Email noto‘g‘ri' });
+    const admin = await Admin.findOne({ email });
 
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) return res.status(400).json({ message: 'Parol noto‘g‘ri' });
+    if (!admin) {
+      return res.status(404).json({ error: "Admin topilmadi!" });
+    }
 
-    const token = generateToken(user);
+    const isMatch = await bcrypt.compare(password, admin.password);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Noto‘g‘ri parol!" });
+    }
 
-    res.json({
-      user: {
-        id: user._id,
-        name: user.name,
-        phone: user.phone,
-        role: user.role
+    admin.lastLogin = new Date();
+    await admin.save();
+
+    const token = jwt.sign(
+      {
+        id: admin._id,
+        email: admin.email,
+        adminName: admin.adminName,
+        role: admin.role,
       },
-      token,
-    });
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+    return res
+      .status(200)
+      .json({ message: "Tizimga muvaffaqiyatli kirdingiz", token });
   } catch (err) {
-    res.status(500).json({ message: 'Kirishda xatolik' });
-    console.log(err)
+    res.status(500).json({ message: "Kirishda xatolik" });
+    console.log(err);
   }
 };
