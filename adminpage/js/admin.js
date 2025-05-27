@@ -142,7 +142,7 @@ document.getElementById('saveBtn')?.addEventListener('click', function (e) {
     lastLogin: document.getElementById('inputLogin').value,
   };
 
-  fetch(`/api/admins/${encodeURIComponent(id)}`, {
+  fetch(`/api/admin/edit/${encodeURIComponent(id)}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updatedAdmin)

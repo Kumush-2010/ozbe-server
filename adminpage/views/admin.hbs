@@ -196,12 +196,30 @@
               <span>Foydalanuvchilar</span>
             </a>
           </li>
-          <li>
-            <a href="/orders">
-              <svg><use xlink:href="#collection"></use></svg>
-              <span>Mahsulotlar</span>
-            </a>
-          </li>
+         <li>
+        <a href="/products">
+          <svg>
+            <use xlink:href="#collection"></use>
+          </svg>
+          <span>Mahsulotlar</span>
+        </a>
+      </li>
+      <li>
+        <a href="/orders">
+          <svg>
+            <use xlink:href="#collection"></use>
+          </svg>
+          <span>Buyurtmalar</span>
+        </a>
+      </li>
+       <li>
+        <a href="/category">
+          <svg>
+            <use xlink:href="#collection"></use>
+          </svg>
+          <span>Kategoriyalar</span>
+        </a>
+      </li>
           <li class="menu-heading">
             <h3>Sozlamalar</h3>
           </li>
@@ -285,9 +303,6 @@
         <table>
           <thead>
             <tr>
-              <th style="width: 60px; accent-color: #5e72e4; cursor: pointer">
-                <input type="checkbox" id="selectAll" />
-              </th>
               <th>Rasm</th>
               <th>Ism</th>
               <th>Pochta</th>
@@ -307,7 +322,7 @@
 
     <!-- Edit Modal -->
       <div class="modal-overlay" id="modalOverlay">
-      <div class="modal">
+      <div class="modal-edit">
         <h2>Admin ma'lumotlarini yangilash</h2>
         <label>Ism:</label>
         <input type="text" id="inputName" />
