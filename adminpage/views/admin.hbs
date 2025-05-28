@@ -196,30 +196,30 @@
               <span>Foydalanuvchilar</span>
             </a>
           </li>
-         <li>
-        <a href="/products">
-          <svg>
-            <use xlink:href="#collection"></use>
-          </svg>
-          <span>Mahsulotlar</span>
-        </a>
-      </li>
-      <li>
-        <a href="/orders">
-          <svg>
-            <use xlink:href="#collection"></use>
-          </svg>
-          <span>Buyurtmalar</span>
-        </a>
-      </li>
-       <li>
-        <a href="/category">
-          <svg>
-            <use xlink:href="#collection"></use>
-          </svg>
-          <span>Kategoriyalar</span>
-        </a>
-      </li>
+          <li>
+            <a href="/products">
+              <svg>
+                <use xlink:href="#collection"></use>
+              </svg>
+              <span>Mahsulotlar</span>
+            </a>
+          </li>
+          <li>
+            <a href="/orders">
+              <svg>
+                <use xlink:href="#collection"></use>
+              </svg>
+              <span>Buyurtmalar</span>
+            </a>
+          </li>
+          <li>
+            <a href="/category">
+              <svg>
+                <use xlink:href="#collection"></use>
+              </svg>
+              <span>Kategoriyalar</span>
+            </a>
+          </li>
           <li class="menu-heading">
             <h3>Sozlamalar</h3>
           </li>
@@ -280,25 +280,21 @@
       <div class="container">
         <h1 style="margin-left: 30px">Adminlar</h1>
 
-<div class="search-bar">
-  <div class="search-input" style="margin-left: 15px">
-    <i class="fas fa-search"></i>
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Qidiruv..."
-    />
-  </div>
-  <div style="padding-right: 10%; width: 30%">
-    <button
-      class="create-admin-btn"
-      onclick="openCreateModal()"
-      id="openModalBtn"
-    >
-      Yangi admin qo‘shish
-    </button>
-  </div>
-</div>
+        <div class="search-bar">
+          <div class="search-input" style="margin-left: 15px">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Qidiruv..." />
+          </div>
+          <div style="padding-right: 10%; width: 30%">
+            <button
+              class="create-admin-btn"
+              onclick="openCreateModal()"
+              id="openModalBtn"
+            >
+              Yangi admin qo‘shish
+            </button>
+          </div>
+        </div>
 
         <table>
           <thead>
@@ -321,12 +317,15 @@
     </section>
 
     <!-- Edit Modal -->
-      <div class="modal-overlay" id="modalOverlay">
-      <div class="modal-edit">
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <span class="close">&times;</span>
         <h2>Admin ma'lumotlarini yangilash</h2>
         <label>Ism:</label>
         <input type="text" id="inputName" />
 
+        <label>Tug‘ilgan sana:
+          <input type="date" name="birth" required /></label><br />
         <label>Email:</label>
         <input type="email" id="inputEmail" />
 
@@ -339,8 +338,17 @@
           <option value="admin">admin</option>
         </select>
 
-        <label>Oxirgi kirish:</label>
-        <input type="text" id="inputLogin" />
+        <label>Jinsi:
+          <select name="jins" required>
+            <option value="erkak">Erkak</option>
+            <option value="ayol">Ayol</option>
+          </select>
+        </label><br />
+
+        <label>Rasm URL: <input type="text" name="image" /></label><br />
+
+        <label>Parol:
+          <input type="password" name="password" required /></label><br />
 
         <div class="modal-buttons">
           <button class="save-btn" id="saveBtn">Saqlash</button>
@@ -355,7 +363,8 @@
         <span class="close">&times;</span>
         <h2>Yangi admin qo‘shish</h2>
         <form id="adminForm" action="/api/admin/create" method="POST">
-          <label>Ism: <input type="text" name="adminname" required /></label><br />
+          <label>Ism: <input type="text" name="adminname" required /></label><br
+          />
 
           <label>Tug‘ilgan sana:
             <input type="date" name="birth" required /></label><br />
@@ -385,7 +394,11 @@
             </select>
           </label><br />
 
-          <button type="submit" class="create-admin-btn" style="margin-left: 300px">Admin yaratish</button>
+          <button
+            type="submit"
+            class="create-admin-btn"
+            style="margin-left: 300px"
+          >Admin yaratish</button>
         </form>
         <p id="message"></p>
       </div>
@@ -407,7 +420,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   {{! <script src="../js/orders.js"></script> }}
   <script>
-    
+
   </script>
 
 </html>

@@ -16,7 +16,7 @@ exports.adminAccessMiddleware = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
+        req.admin = decoded;
 
         const admin = await Admin.findById(req.user.id);
         if (!admin) {

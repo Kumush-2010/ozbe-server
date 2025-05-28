@@ -69,11 +69,21 @@ exports.login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
-    return res
-      .status(200)
-      .json({ message: "Tizimga muvaffaqiyatli kirdingiz", token });
+
+    res.cookie("token", token, {
+      httpOnly: true,     // JavaScript ko‘ra olmaydi
+      secure: false,      // HTTPS bo‘lsa true qilinadi
+      maxAge: 24 * 60 * 60 * 1000, // 1 kun
+    });
+
+    return res.status(200).json({ message: "Tizimga muvaffaqiyatli kirdingiz" });
   } catch (err) {
     res.status(500).json({ message: "Kirishda xatolik" });
     console.log(err);
   }
+};
+
+exports.logout = (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Chiqdingiz!" });
 };

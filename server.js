@@ -11,6 +11,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const connectDB = require("./config/db");
 const apiRoutes = require("./app");
+const { jwtAccessMiddleware } = require("./middleware/jwt-access.middleware");
 
 connectDB();
 
@@ -49,11 +50,11 @@ app.get('/api/admin/login', (req, res) => {
     res.render('login', { layout: false });
 });
 
-app.get("/admin", (req, res) => {
+app.get("/admin", jwtAccessMiddleware, (req, res) => {
   return res.render("dashboard", { title: "Admin Panel", layout: false });
 });
 
-app.get("/admins", async(req, res) => {  
+app.get("/admins", jwtAccessMiddleware, async(req, res) => {  
   return res.render("admin", { title: "Admins", layout: false });
 })
 
