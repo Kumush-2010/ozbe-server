@@ -9,24 +9,24 @@ submitBtn.addEventListener('click', async (e) => {
   const email = emailInput.value.trim();
   const password = passwordInput.value;
 
-  const res = await fetch('/api/admin/login', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include', // cookie uchun muhim
-    body: JSON.stringify({ email, password })
-  });
+  // const res = await fetch('/api/auth/login', {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   credentials: 'include', // cookie uchun muhim
+  //   body: JSON.stringify({ email, password })
+  // });
 
-  const data = await res.json();
-  console.log('Server javobi:', data);
+  // const data = await res.json();
+  // console.log('Server javobi:', data);
 
-  if (data.success) {
-    alert('Xush kelibsiz, Admin!');
-    window.location.href = '../views//admin'; 
-  } else {
-    alert(data.message || 'Email yoki parol noto‘g‘ri');
-  }
+  // if (data.success) {
+  //   alert('Xush kelibsiz, Admin!');
+  //   window.location.href = '../views//admin'; 
+  // } else {
+  //   alert(data.message || 'Email yoki parol noto‘g‘ri');
+  // }
 });
 
 // require('../views/')

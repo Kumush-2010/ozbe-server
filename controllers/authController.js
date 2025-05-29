@@ -39,7 +39,11 @@ exports.register = async (req, res) => {
   }
 };
 
-// POST /api/auth/login
+exports.loginPage = (req, res) => {
+    return res.render('login', { layout: false });
+}
+
+// admin login
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -76,7 +80,8 @@ exports.login = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000, // 1 kun
     });
 
-    return res.status(200).json({ message: "Tizimga muvaffaqiyatli kirdingiz" });
+    // return res.status(200).json({ message: "Tizimga muvaffaqiyatli kirdingiz" });
+    return res.redirect('/admin')
   } catch (err) {
     res.status(500).json({ message: "Kirishda xatolik" });
     console.log(err);
@@ -85,5 +90,6 @@ exports.login = async (req, res) => {
 
 exports.logout = (req, res) => {
   res.clearCookie("token");
-  res.status(200).json({ message: "Chiqdingiz!" });
+  // res.status(200).json({ message: "Chiqdingiz!" });
+  return res.redirect('/api/auth/login')
 };

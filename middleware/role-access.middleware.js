@@ -7,13 +7,13 @@ const roleAccessMiddleware = function ([roles]) {
   return async function (req, res, next) {
     try {
       
-          const authHeader = req.headers['authorization'];
-          if(!authHeader) {
-              return res.status(404).send({
-                  error: "Token not found!"
-              })
-          }
-          const token = authHeader.split(' ')[1];
+          // const authHeader = req.headers['authorization'];
+          // if(!authHeader) {
+          //     return res.status(404).send({
+          //         error: "Token not found!"
+          //     })
+          // }
+         const token = req.cookies.token
       
               if (!token) {
                   return res.status(401).json({ message: "Token is missing" });

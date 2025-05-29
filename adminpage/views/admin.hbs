@@ -3,13 +3,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../css/test.css" />
+  
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
-    <link rel="stylesheet" href="../css/server.css" />
-    <link rel="stylesheet" href="../css/users.css" />
+    <link rel="stylesheet" href="/adminpage/css/server.css" />
+    <link rel="stylesheet" href="/adminpage/css/users.css" />
+    <link rel="stylesheet" href="/adminpage/css/test.css" />
     <style>
       .create-admin-btn { background-color: #4caf50; color: white; padding: 10px
       20px; font-size: 16px; border: none; border-radius: 6px; cursor: pointer;
@@ -161,7 +162,7 @@
 
     <header class="page-header">
       <nav>
-        <a href="/dashboard" aria-label="forecastr logo" class="logo">
+        <a href="/admin" aria-label="forecastr logo" class="logo">
           <img
             src="/images/logo2.png"
             class="logo"
@@ -185,13 +186,13 @@
             <h3>Admin</h3>
           </li>
           <li>
-            <a href="/admins">
+            <a href="/api/admin/admins">
               <svg><use xlink:href="#pages"></use></svg>
               <span>Adminlar</span>
             </a>
           </li>
           <li>
-            <a href="/users">
+            <a href="/api/users/all">
               <svg><use xlink:href="#users"></use></svg>
               <span>Foydalanuvchilar</span>
             </a>
@@ -230,7 +231,7 @@
             </a>
           </li>
           <li>
-            <a href="/index.html">
+            <a href="/api/auth/logout">
               <i class="fa fa-sign-in-alt me-2"></i>
               <span style="margin-left: 12px;">Chiqish</span>
             </a>
@@ -411,9 +412,9 @@
   ></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  {{! <script src="../js/test.js"></script> }}
+  <script src="/adminpage/js/test.js"></script> 
 
-  <script src="../js/admin.js"></script>
+  <script src="/adminpage/js/admin.js"></script>
   <script
     src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
   ></script>

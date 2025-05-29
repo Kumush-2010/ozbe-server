@@ -1,4 +1,3 @@
-const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/db");
@@ -10,22 +9,21 @@ const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const adminRoutes = require('./routes/adminRoutes'); 
+const usersRoutes = require('./routes/usersRoutes')
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const Router = require('express').Router();
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
-// app.use("/api/auth", authRoutes);
-app.use('/categories', categoryRoutes);
-app.use('/products', productRoutes);
-app.use('/cart', cartRoutes);
-app.use('/orders', orderRoutes);
+Router.use("/auth", authRoutes);
+Router.use('/admin', adminRoutes); 
+Router.use('/users', usersRoutes)
+Router.use('/categories', categoryRoutes);
+Router.use('/products', productRoutes);
+Router.use('/cart', cartRoutes);
+Router.use('/orders', orderRoutes);
 
 
-app.use('/admin', adminRoutes); 
 
 
-module.exports = app;
+module.exports = Router;

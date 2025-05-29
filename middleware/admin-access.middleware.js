@@ -4,13 +4,13 @@ const Admin = require("../models/admin");
 
 exports.adminAccessMiddleware = async (req, res, next) => {
     try {
-        const authHeader = req.headers["authorization"];
-        if (!authHeader) {
-            return res.status(404).send({
-                error: "Token not found!",
-            });
-        }
-        const token = authHeader.split(" ")[1];
+        // const authHeader = req.headers["authorization"];
+        // if (!authHeader) {
+        //     return res.status(404).send({
+        //         error: "Token not found!",
+        //     });
+        // }
+         const token = req.cookies.token
         if (!token) {
             return res.status(401).json({ error: "Token topilmadi!" });
         }
@@ -18,7 +18,7 @@ exports.adminAccessMiddleware = async (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.admin = decoded;
 
-        const admin = await Admin.findById(req.user.id);
+        const admin = await Admin.findById(decoded.id);
         if (!admin) {
             return res.status(404).json({ error: "Admin topilmadi!" });
         }

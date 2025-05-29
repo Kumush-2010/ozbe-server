@@ -31,12 +31,15 @@
 
 const modal = document.getElementById("adminModal"); 
     const openModalBtn = document.getElementById("openModalBtn"); 
-    const closeBtn = document.querySelector(".close"); 
     openModalBtn.onclick = () => modal.style.display = "block"; 
-    closeBtn.onclick = () => modal.style.display = "none"; 
     window.onclick = (e) => { if (e.target === modal)
     modal.style.display = "none"; }; // Admin yaratish AJAX orqali
 
+document.querySelectorAll(".close").forEach(closeBtn => {
+  closeBtn.addEventListener("click", () => {
+    closeBtn.closest(".modal-overlay").style.display = "none";
+  });
+});
 
     // search
   document.getElementById('searchInput')?.addEventListener('input', function () {
@@ -53,7 +56,7 @@ const modal = document.getElementById("adminModal");
 });
 
 
-fetch('/api/admin')
+fetch('/api/admin/')
   .then(res => res.json())
   .then(data => {
     const tbody = document.getElementById('adminTableBody');
@@ -107,7 +110,7 @@ function editUser(button) {
   const emailEl = row.querySelector('.author-email');
   const phone   = row.children[3]?.textContent.trim() || '';
   const roleEl  = row.querySelector('.status');
-  const login   = row.children[5]?.textContent.trim() || '';
+  // const login   = row.children[5]?.textContent.trim() || '';
   const id      = button.dataset.id; // data-id’dan
 
   // 3) Modalni ochamiz
@@ -119,8 +122,7 @@ function editUser(button) {
   document.getElementById('inputEmail').value = emailEl?.textContent.trim() || '';
   document.getElementById('inputPhone').value = phone;
   document.getElementById('inputRole').value  = roleEl?.textContent.trim() || '';
-  document.getElementById('inputLogin').value = login;
-
+  // document?.getElementById('inputLogin')?.value = login;
   // 5) Save tugmasiga id o‘rnatamiz
   document.getElementById('saveBtn').dataset.id = id;
 }
@@ -128,37 +130,67 @@ function editUser(button) {
 
 document.getElementById('saveBtn')?.addEventListener('click', function (e) {
   e.preventDefault();
-  const id = this.dataset.id;
-  if (!id) {
-    alert("ID topilmadi");
-    return;
-  }
+
+  // const token = document.cookie.split("; ");
+  const id = this.dataset.id; // <== Edit qilish uchun adminning ID si
+  // if (!id) {
+  //   alert("Admin ID topilmadi");
+  //   return;
+  // }
 
   const updatedAdmin = {
     adminname: document.getElementById('inputName').value,
+    birth:     document.querySelector('input[name="birth"]').value,
     email:     document.getElementById('inputEmail').value,
     phone:     document.getElementById('inputPhone').value,
     role:      document.getElementById('inputRole').value,
-    lastLogin: document.getElementById('inputLogin').value,
+    jins:      document.querySelector('select[name="jins"]').value,
+    image:     document.querySelector('input[name="image"]').value,
+    password:  document.querySelector('input[name="password"]').value
   };
 
-  fetch(`/api/admin/edit/${encodeURIComponent(id)}`, {
+  fetch(`/api/admin/edit/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      // 'Authorization': `Bearer ${token}`
+    },
     body: JSON.stringify(updatedAdmin)
   })
     .then(res => {
-      if (!res.ok) throw new Error(res.statusText);
+      if (!res.ok) throw new Error(`HTTP xatolik: ${res.status}`);
       return res.json();
     })
-    .then(() => {
-      alert("Ma'lumot muvaffaqiyatli yangilandi!");
+    .then(data => {
+      alert("Admin ma'lumotlari muvaffaqiyatli yangilandi!");
       document.getElementById('modalOverlay').style.display = 'none';
-      location.reload();
+      location.reload(); // Sahifani yangilash
     })
     .catch(err => {
-      console.error('Yangilash xatosi:', err);
+      console.error("Xatolik:", err);
       alert("Yangilashda muammo yuz berdi");
     });
 });
 
+
+
+// delete
+function confirmDelete(id) {
+  if (confirm("Haqiqatan ham ushbu adminni o‘chirmoqchimisiz?")) {
+    fetch(`/api/admin/delete/${id}`, {
+      method: 'DELETE'
+    })
+    .then(res => {
+      if (!res.ok) throw new Error(`HTTP xatolik: ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      alert("Admin muvaffaqiyatli o‘chirildi!");
+      location.reload(); // Jadvalni yangilash
+    })
+    .catch(err => {
+      console.error("Xatolik:", err);
+      alert("O‘chirishda xatolik yuz berdi");
+    });
+  }
+}
