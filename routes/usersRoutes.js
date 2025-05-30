@@ -8,7 +8,7 @@ router
 .get('/all', usersPage)
 .get('/', allUsers )
 .get('/create', (req, res) => {
-  res.render('user-create'); 
+  res.render('users'); 
 })
 .post('/create', userCreate)
 .put(

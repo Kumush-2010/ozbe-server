@@ -220,20 +220,19 @@
                   <h1 style="margin-left: 30px;"> Foydalanuvchilar</h1>
                   
                   <div class="search-bar">
-                      <div class="search-input" style="margin-left: 15px;">
-                          <i class="fas fa-search"></i>
-                          <input type="text" placeholder="Qidiruv...">
-                      </div>
-                      <div style="padding-right: 10%; width: 30%;">
-                        <button class="create-admin-btn" onclick="openCreateModal()">Yangi user qo‘shish</button>
-            
-                      </div>
+                      <div class="search-input" style="margin-left: 15px">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Qidiruv..." />
+          </div>
+                      {{!-- <div style="padding-right: 10%; width: 30%;">
+                        <button class="create-admin-btn" onclick="openCreateModal()" id="openModalBtn">Yangi user qo‘shish</button>
+                      </div> --}}
                   </div>
                   
                   <table>
                       <thead>
                           <tr>
-                            <th>Rasm</th>
+                              <th>Rasm</th>
                               <th>Ism</th>
                               <th>Pochta</th>
                               <th>Telefon</th>
@@ -244,194 +243,15 @@
                           </tr>
                       </thead>
                       <tbody id="usersTableBody">
-                        {{!-- <tr>
-                            <div class="item">
-                            <td><input type="checkbox" class="checkbox"></td> 
-                            <td>
-                                <div class="author-info">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqtZl9sNa9hL6aIWgh4rGfIIpQXLHZ-w5VIg&s" alt="Avatar" class="avatar">
-                                    <div>
-                                        <div class="author-name">Alexa Liras</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td><div class="author-email">john@creative-tim.com</div></td>
-                            <td>+998999999999</td>
-                            <td><span class="status status-online">2</span></td>
-                            <td>23/04/18</td>
-                            <td>
-                              <div class="action-buttons">
-                                <button class="btn btn-edit" onclick="editUser(this)">
-                                  <i class="fas fa-edit"></i> 
-                                </button>
-                                <button
-                                  class="btn btn-delete"
-                                  onclick="confirmDelete(this)"
-                                >
-                                  <i class="fas fa-trash"></i>
-                                </button>
-                              </div>
-                            </td>
-                        </div>
-                        </tr>
-                          <tr>
-                              <td><input type="checkbox" class="checkbox"></td>
-                              <td>
-                                  <div class="author-info">
-                                      <img src="https://wallpapercat.com/w/full/5/6/a/5815395-1080x1920-iphone-hd-cool-background-photo.jpg" alt="Avatar" class="avatar">
-                                      <div>
-                                          <div class="author-name">Alexa Liras</div>
-                                      </div>
-                                  </div>
-                              </td>
-                              <td>
-                                <div class="author-email">alexa@creative-tim.com</div>
-                              </td>
-                              <td>+998999999999</td>
-                              <td><span class="status status-online">26</span></td>
-                              <td>11/01/19</td>
-                              <td>
-                                <div class="action-buttons">
-                                  <button class="btn btn-edit" onclick="editUser(this)">
-                                    <i class="fas fa-edit"></i> 
-                                  </button>
-                                  <button
-                                    class="btn btn-delete"
-                                    onclick="confirmDelete(this)"
-                                  >
-                                    <i class="fas fa-trash"></i>
-                                  </button>
-                                </div>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td><input type="checkbox" class="checkbox"></td>
-                              <td>
-                                  <div class="author-info">
-                                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKJ3Fk0uY7hhK6M2yklFocRM85KckDxQU-Dw&s" alt="Avatar" class="avatar">
-                                      <div>
-                                          <div class="author-name">Laurent Perrier</div>
-                                      </div>
-                                  </div>
-                              </td>
-                              <td>
-                                <div class="author-email">laurent@creative-tim.com</div>
-                              </td>
-                              <td>+998999999999</td>
-                              <td><span class="status status-online">5</span></td>
-                              <td>19/09/17</td>
-                              <td>
-                                <div class="action-buttons">
-                                  <button class="btn btn-edit" onclick="editUser(this)">
-                                    <i class="fas fa-edit"></i> 
-                                  </button>
-                                  <button
-                                    class="btn btn-delete"
-                                    onclick="confirmDelete(this)"
-                                  >
-                                    <i class="fas fa-trash"></i>
-                                  </button>
-                                </div>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td><input type="checkbox" class="checkbox"></td>
-                              <td>
-                                  <div class="author-info">
-                                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ5jSgqAJa5Vo3EmNguaWGsFf6NhI3vKiAIg&s" alt="Avatar" class="avatar">
-                                      <div>
-                                          <div class="author-name">Michael Levi</div>
-                                      </div>
-                                  </div>
-                              </td>
-                              <td>
-                                <div class="author-email">michael@creative-tim.com</div>
-                              </td>
-                              <td>+998999999999</td>
-                              <td><span class="status status-online">7</span></td>
-                              <td>24/12/08</td>
-                              <td>
-                                <div class="action-buttons">
-                                  <button class="btn btn-edit" onclick="editUser(this)">
-                                    <i class="fas fa-edit"></i> 
-                                  </button>
-                                  <button
-                                    class="btn btn-delete"
-                                    onclick="confirmDelete(this)"
-                                  >
-                                    <i class="fas fa-trash"></i>
-                                  </button>
-                                </div>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td><input type="checkbox" class="checkbox"></td>
-                              <td>
-                                  <div class="author-info">
-                                      <img src="https://img.freepik.com/free-vector/cute-cool-boy-dabbing-pose-cartoon-vector-icon-illustration-people-fashion-icon-concept-isolated_138676-5680.jpg?semt=ais_hybrid&w=740" alt="Avatar" class="avatar">
-                                      <div>
-                                          <div class="author-name">Richard Gran</div>
-                                      </div>
-                                  </div>
-                              </td>
-                              <td>
-                                <div class="author-email">richard@creative-tim.com</div>
-                              </td>
-                              <td>+998999999999</td>
-                              <td><span class="status status-optime">8</span></td>
-                              <td>04/10/21</td>
-                              <td>
-                                <div class="action-buttons">
-                                  <button class="btn btn-edit" onclick="editUser(this)">
-                                    <i class="fas fa-edit"></i> 
-                                  </button>
-                                  <button
-                                    class="btn btn-delete"
-                                    onclick="confirmDelete(this)"
-                                  >
-                                    <i class="fas fa-trash"></i>
-                                  </button>
-                                </div>
-                              </td>
-                          </tr>
-                          <tr>
-                              <td><input type="checkbox" class="checkbox"></td>
-                              <td>
-                                  <div class="author-info">
-                                      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH2wyg2A-cQ-7w2CQH_bM-WJg4Q0rOaubV1g&s" alt="Avatar" class="avatar">
-                                      <div>
-                                          <div class="author-name">Miriam Eric</div>
-                                      </div>
-                                  </div>
-                              </td>
-                              <td>
-                                <div class="author-email">miriam@creative-tim.com</div>
-                              </td>
-                              <td>+998999999999</td>
-                              <td><span class="status status-optime">2</span></td>
-                              <td>14/09/20</td>
-                              <td>
-                                <div class="action-buttons">
-                                  <button class="btn btn-edit" onclick="editUser(this)">
-                                    <i class="fas fa-edit"></i> 
-                                  </button>
-                                  <button
-                                    class="btn btn-delete"
-                                    onclick="confirmDelete(this)"
-                                  >
-                                    <i class="fas fa-trash"></i>
-                                  </button>
-                                </div>
-                              </td>
-                          </tr> --}}
                       </tbody>
                   </table>
               </div>
         </div>
     </div>
 <!--  Modal -->
-<div class="modal-overlay" id="userModal">
+{{!-- <div class="modal-overlay" id="userModal">
   <div class="modal">
+        <span class="close">&times;</span>
     <h2>User ma'lumotlarini yangilash</h2>
     <span class="close">&times;</span>
     <label>Ism:</label>
@@ -454,34 +274,53 @@
       <button class="close-btn" id="closeBtn">Bekor qilish</button>
     </div>
   </div>
-</div>
+</div> --}}
 
 <!-- Create Modal -->
 <div class="modal-overlay" id="createModalOverlay">
   <div class="modal">
+        <span class="close">&times;</span>
     <h2>Yangi foydalanuvchi qo‘shish</h2>
-
+        <form id="userForm" action="/api/users/create" method="POST"> 
+    
     <label>Ism:</label>
-    <input type="text" id="createName" />
+    <input type="text" name="name" id="createName" />
+
+    <label>Tug‘ilgan sana:
+    <input type="date" name="birth" required /></label><br />
 
     <label>Email:</label>
-    <input type="email" id="createEmail" />
+    <input type="email" name="email" id="createEmail" />
 
     <label>Telefon:</label>
-    <input type="text" id="createPhone" />
+    <input type="text" name="phone" id="createPhone" />
 
-    <label>Orders:</label>
-      <input type="number" id="createOrders" min="1">
 
-    <label>Oxirgi kirish:</label>
-    <input type="text" id="createLogin" />
+    <label>Rasm URL: <input type="text" name="image" /></label><br />
+    
+    <label>Jinsi:
+      <select name="jins" required>
+        <option value="erkak">Erkak</option>
+        <option value="ayol">Ayol</option>
+      </select>
+    </label><br />
 
+    <label>Rol:
+      <select name="role" required>
+        <option value="user">user</option>
+      </select>
+    </label><br />
+
+    <label>Parol:
+    <input type="password" name="password" required /></label><br />
+
+          
     <div class="modal-buttons">
       <button class="save-btn" id="createSaveBtn">Saqlash</button>
-      <button class="close-btn" id="createCloseBtn">Bekor qilish</button>
+      <button class="close-btn" id="closeBtn">Bekor qilish</button>
     </div>
   </div>
-</div>
+{{!-- </div> --}}
 
 
   <script src="/adminpage/js/users.js"></script>

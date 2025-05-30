@@ -3,6 +3,7 @@ const Order = require("../models/order");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
+const user = require("../models/user");
 
 exports.usersPage = async (req, res) => {
   return res.render("users", { layout: false });
@@ -10,20 +11,31 @@ exports.usersPage = async (req, res) => {
 
 exports.allUsers = async (req, res) => {
   try {
-    const Users = await User.find();
+    const users = await User.find();
 
-    if (!Users) {
-      return res.status(400).send({
-        message: "Userlar topilmadi!",
-      });
-    } else {
-      return res.status(200).json({ message: "Userlar", Users });
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "Userlar topilmadi!" });
     }
+
+    // Har bir user uchun orderCountni hisoblash
+    const usersWithOrderCount = await Promise.all(users.map(async (user) => {
+      const orderCount = await Order.countDocuments({ user: user._id });
+      return {
+        ...user.toObject(),
+        orderCount
+      };
+    }));
+
+    return res.status(200).json({
+      message: "Userlar ro‘yxati",
+      users: usersWithOrderCount
+    });
   } catch (error) {
     console.error("Userlarni olishda xatolik:", error);
     return res.status(500).json({ error: "Server xatosi yuz berdi." });
   }
 };
+
 
 exports.userCreate = async (req, res) => {
   try {
@@ -106,9 +118,9 @@ exports.userEdit = async (req, res) => {
 exports.userDelete = async (req, res) => {
   try {
     const { id } = req.params;
-    const User = await User.findById(id);
+    const user = await User.findById(id);
 
-    if (!User) {
+    if (!user) {
       return res.status(404).json({ error: "User topilmadi!" });
     }
 
