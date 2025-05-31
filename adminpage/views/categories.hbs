@@ -248,7 +248,7 @@
             <input type="text" id="searchInput" placeholder="Qidiruv..." />
           </div>
                       <div style="padding-right: 10%; width: 30%;">
-                        <button class="create-admin-btn" onclick="openCreateModal()"> Kategoriya qo‘shish</button>
+                        <button class="create-admin-btn" id="addCategoryBtn" onclick="createCategory()"> Kategoriya qo‘shish</button>
                       </div>
                   </div>
                   
@@ -259,12 +259,59 @@
                               <th>ACTION</th>
                           </tr>
                       </thead>
-                      <tbody id="usersTableBody">
+                      <tbody id="category-bar">
                       </tbody>
                   </table>
               </div>
         </div>
     </div>
+
+{{!-- Create --}}
+<div class="modal-overlay" id="categoryModal">
+      <div class="modal" style="margin: 330px auto;">
+        <span class="close">&times;</span>
+        <h2>Yangi kategoriya qo‘shish</h2>
+        <form id="addCategoryForm" action="/api/categories/create" method="POST" style="margin-top: 15px;">
+          <label for="categoryName">Kategoriya Nomi:</label>
+  <input
+    type="text"
+    id="categoryName"
+    name="name"
+    placeholder="Misol: Elektronika"
+    required
+  />
+
+  <div class="modal-buttons"> 
+  <button type="submit" class="create-admin-btn" style="margin-left: 300px" id="saveB" onclick="saveCategory()">Saqlash</button>
+        </div>
+        </form>
+        <p id="addCategoryMessage" style="color: red; margin-top: 0.5rem;"></p>
+      </div>
+    </div>
+
+{{!-- Edit --}}
+<div class="modal-overlay" id="categoryEdit">
+      <div class="modal" style="margin: 330px auto;">
+        <span class="close">&times;</span>
+        <h2>Kategoriyani yangilash </h2>
+        <form id="addCategoryForm" action="/api/categories/edit" method="PUT" style="margin-top: 15px;">
+          <label for="categoryName">Kategoriya Nomi:</label>
+  <input
+    type="text"
+    id="categoryName"
+    name="name"
+    placeholder="Misol: Elektronika"
+    required
+  />
+
+  <div class="modal-buttons"> 
+  <button type="submit" class="create-admin-btn" style="margin-left: 300px" id="saveBtn" onclick="saveCategory(this)">Saqlash</button>
+        </div>
+        </form>
+        <p id="addCategoryMessage" style="color: red; margin-top: 0.5rem;"></p>
+      </div>
+    </div>
+
 
 
   <script src="/adminpage/js/category.js"></script>

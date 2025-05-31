@@ -67,7 +67,7 @@ fetch('/api/admin/')
       tr.innerHTML = `
         <td>
           <div class="author-info">
-            <div class="avatar">${admin.adminname?.slice(0, 2).toUpperCase()}</div>
+            <img src="${admin.image || 'https://via.placeholder.com/40'}" alt="Avatar" class="avatar">
           </div>
         </td>
         <td>

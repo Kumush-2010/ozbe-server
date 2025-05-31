@@ -10,6 +10,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const adminRoutes = require('./routes/adminRoutes'); 
 const usersRoutes = require('./routes/usersRoutes')
+const { jwtAccessMiddleware } = require('./middleware/jwt-access.middleware')
 
 const Router = require('express').Router();
 
@@ -22,8 +23,6 @@ Router.use('/categories', categoryRoutes);
 Router.use('/products', productRoutes);
 Router.use('/cart', cartRoutes);
 Router.use('/orders', orderRoutes);
-
-
 
 
 module.exports = Router;

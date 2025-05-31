@@ -271,79 +271,7 @@
               </div>
         </div>
     </div>
-<!--  Modal -->
-{{!-- <div class="modal-overlay" id="userModal">
-  <div class="modal">
-        <span class="close">&times;</span>
-    <h2>User ma'lumotlarini yangilash</h2>
-    <span class="close">&times;</span>
-    <label>Ism:</label>
-    <input type="text" id="userName" />
 
-    <label>Email:</label>
-    <input type="email" id="userEmail" />
-
-    <label>Telefon:</label>
-    <input type="text" id="userPhone" />
-
-    <label>Orders:</label>
-    <input type="number" id="userOrder" min="1">
-
-    <label>Oxirgi kirish:</label>
-    <input type="text" id="userLastLogin" />
-
-    <div class="modal-buttons">
-      <button class="save-btn" id="userSaveBtn">Saqlash</button>
-      <button class="close-btn" id="closeBtn">Bekor qilish</button>
-    </div>
-  </div>
-</div> --}}
-
-<!-- Create Modal -->
-<div class="modal-overlay" id="createModalOverlay">
-  <div class="modal">
-        <span class="close">&times;</span>
-    <h2>Yangi foydalanuvchi qo‘shish</h2>
-        <form id="userForm" action="/api/users/create" method="POST"> 
-    
-    <label>Ism:</label>
-    <input type="text" name="name" id="createName" />
-
-    <label>Tug‘ilgan sana:
-    <input type="date" name="birth" required /></label><br />
-
-    <label>Email:</label>
-    <input type="email" name="email" id="createEmail" />
-
-    <label>Telefon:</label>
-    <input type="text" name="phone" id="createPhone" />
-
-
-    <label>Rasm URL: <input type="text" name="image" /></label><br />
-    
-    <label>Jinsi:
-      <select name="jins" required>
-        <option value="erkak">Erkak</option>
-        <option value="ayol">Ayol</option>
-      </select>
-    </label><br />
-
-    <label>Rol:
-      <select name="role" required>
-        <option value="user">user</option>
-      </select>
-    </label><br />
-
-    <label>Parol:
-    <input type="password" name="password" required /></label><br />
-
-          
-    <div class="modal-buttons">
-      <button class="save-btn" id="createSaveBtn">Saqlash</button>
-      <button class="close-btn" id="closeBtn">Bekor qilish</button>
-    </div>
-  </div>
-{{!-- </div> --}}
 
 
   <script src="/adminpage/js/users.js"></script>

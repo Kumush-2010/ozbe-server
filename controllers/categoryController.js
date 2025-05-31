@@ -8,7 +8,7 @@ exports.createCategory = async (req, res) => {
   try {
     const category = new Category({ name: req.body.name });
     await category.save();
-    res.status(201).json({
+    return res.status(201).json({
         message: "Kategoriya yaratildi"
     }, category);
   } catch (err) {
@@ -20,9 +20,9 @@ exports.createCategory = async (req, res) => {
 exports.getAllCategories = async (req, res) => {
    try {
     const categories = await Category.find().sort({ createdAt: -1 });
-    res.json(categories);
+    return res.status(200).json(categories);
   } catch (error) {
-    res.status(500).json({ message: 'Kategoriya olishda xatolik' });
+    return res.status(500).json({ message: 'Kategoriya olishda xatolik' });
   }
 };
 
@@ -32,9 +32,9 @@ exports.updateCategory = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
     const updated = await Category.findByIdAndUpdate(id, { name }, { new: true });
-    res.json(updated);
+    return res.status(200).json(updated);
   } catch (error) {
-    res.status(500).json({ message: 'Yangilashda xatolik' });
+    return res.status(500).json({ message: 'Yangilashda xatolik' });
   }
 };
 
@@ -43,8 +43,8 @@ exports.deleteCategory = async (req, res) => {
   try {
     const { id } = req.params;
     await Category.findByIdAndDelete(id);
-    res.json({ message: 'Kategoriya o‘chirildi' });
+    return res.json({ message: 'Kategoriya o‘chirildi' });
   } catch (error) {
-    res.status(500).json({ message: 'O‘chirishda xatolik' });
+    return res.status(500).json({ message: 'O‘chirishda xatolik' });
   }
 };
