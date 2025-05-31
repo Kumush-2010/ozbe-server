@@ -7,27 +7,35 @@ const {
   updateProduct,
   deleteProduct,
   getProducts,
+  productsPage,
 } = require("../controllers/productController");
 const { adminAccessMiddleware } = require("../middleware/admin-access.middleware.js")
 const { roleAccessMiddleware } = require("../middleware/role-access.middleware.js")
 const upload = require("../middleware/upload");
 
-router.get('/', getAllProducts);
-router.get("/", getProducts);
-router.get("/:id", getProductById);
-router.post(
-  "/",
-  roleAccessMiddleware(["superadmin"]),
+router
+.get('/all', productsPage)
+.get('/', getAllProducts)
+// .get("/", getProducts)
+.get("/:id", getProductById)
+.get('/create', (req, res) => {
+  res.render('products'); 
+})
+.post(
+  "/create",
+  // roleAccessMiddleware(["superadmin"]),
   upload.single("image"),
   createProduct
-);
-router.put(
-  "/:id",
+)
+.put(
+  "/edit/:id",
+  adminAccessMiddleware,
   roleAccessMiddleware(["superadmin"]),
   updateProduct
-);
-router.delete(
-  "/:id",
+)
+.delete(
+  "/delete/:id",
+  adminAccessMiddleware,
   roleAccessMiddleware(["superadmin"]),
   deleteProduct
 );

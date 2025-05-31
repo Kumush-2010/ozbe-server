@@ -5,27 +5,30 @@ const {
   getAllCategories,
   updateCategory,
   deleteCategory,
+  categoriesPage,
 } = require("../controllers/categoryController");
 const {
   authMiddleware
 } = require("../middleware/admin-access.middleware");
 const { roleAccessMiddleware } = require("../middleware/role-access.middleware.js")
 
-router.post(
-  "/",
+router
+.get("/all", categoriesPage)
+.get("/", getAllCategories)
+.post(
+  "/create",
   roleAccessMiddleware(["superadmin", "admin"]),
   createCategory
-);
-router.get("/", getAllCategories);
-router.put(
-  "/:id",
+)
+.put(
+  "/edit/:id",
   roleAccessMiddleware(["superadmin", "admin"]),
   updateCategory
-);
-router.delete(
-  "/:id",
+)
+.delete(
+  "/delete/:id",
   roleAccessMiddleware(["superadmin", 'admin']),
   deleteCategory
-);
+)
 
 module.exports = router;

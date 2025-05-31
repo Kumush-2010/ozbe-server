@@ -1,5 +1,8 @@
 const Category = require('../models/category');
 
+exports.categoriesPage = async (req, res) => {
+  return res.render("categories", { layout: false });
+};
 // POST /api/categories
 exports.createCategory = async (req, res) => {
   try {
@@ -15,41 +18,33 @@ exports.createCategory = async (req, res) => {
 
 // GET /api/categories
 exports.getAllCategories = async (req, res) => {
-  const categories = await Category.find().sort({ createdAt: -1 });
-
-  res.status(404).json({
-    message: "Kategoriyalar topilmadi"
-  })
-
-  return res.status(200).json({
-    message: "Kategoriyalar"
-  }, categories);
+   try {
+    const categories = await Category.find().sort({ createdAt: -1 });
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: 'Kategoriya olishda xatolik' });
+  }
 };
 
 // PUT /api/categories/:id
 exports.updateCategory = async (req, res) => {
-  try {
-    const category = await Category.findByIdAndUpdate(
-      req.params.id,
-      { name: req.body.name },
-      { new: true }
-    );
-    if (!category) return res.status(404).json({ message: 'Kategoriya topilmadi' });
-    return res.status(200).json({
-        message: "Kategorialar"
-    }, category);
-  } catch {
-    res.status(400).json({ message: 'Yangilashda xatolik' });
+ try {
+    const { id } = req.params;
+    const { name } = req.body;
+    const updated = await Category.findByIdAndUpdate(id, { name }, { new: true });
+    res.json(updated);
+  } catch (error) {
+    res.status(500).json({ message: 'Yangilashda xatolik' });
   }
 };
 
 // DELETE /api/categories/:id
 exports.deleteCategory = async (req, res) => {
   try {
-    const category = await Category.findByIdAndDelete(req.params.id);
-    if (!category) return res.status(404).json({ message: 'Kategoriya topilmadi' });
-    return res.status(200).json({ message: 'Kategoriya o‘chirildi' });
-  } catch {
-    res.status(400).json({ message: 'O‘chirishda xatolik' });
+    const { id } = req.params;
+    await Category.findByIdAndDelete(id);
+    res.json({ message: 'Kategoriya o‘chirildi' });
+  } catch (error) {
+    res.status(500).json({ message: 'O‘chirishda xatolik' });
   }
 };

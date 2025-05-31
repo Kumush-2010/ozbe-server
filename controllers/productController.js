@@ -1,28 +1,39 @@
 const Product = require('../models/product');
+const Category = require('../models/category');
+
+exports.productsPage = async (req, res) => {
+  return res.render("products", { layout: false });
+};
 
 // POST /api/products
 exports.createProduct = async (req, res) => {
-  
   try {
-    const { name, description, price, category } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const { name, image, price, countInStock, description, category } = req.body;
 
-    const product = new Product({
+    // category: bu yerda `nom` (string) keladi, masalan: "Ayollar"
+    const foundCategory = await Category.findOne({ name: category });
+    if (!foundCategory) {
+      return res.status(400).json({ message: "Kategoriya topilmadi: " + category });
+    }
+
+    const newProduct = new Product({
       name,
-      description,
-      price,
-      category,
       image,
+      price,
+      countInStock,
+      description,
+      category: foundCategory._id // bu yerda ObjectId ni beramiz
     });
 
-    await product.save();
+    await newProduct.save();
 
-    res.status(201).json(product);
+    res.status(201).json({ message: 'Mahsulot yaratildi', product: newProduct });
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Mahsulot yaratishda xatolik:", error);
+    res.status(500).json({ message: 'Server xatosi', error });
   }
 };
-
 
 // GET /api/products
 exports.getAllProducts = async (req, res) => {

@@ -31,4 +31,3 @@ exports.adminAccessMiddleware = async (req, res, next) => {
             .json({ error: "Noto‘g‘ri yoki eskirgan token!" });
     }
 };
-
