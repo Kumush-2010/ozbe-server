@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../../test.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../../server.css">
+</head>
+<body>
+
+<header class="page-header">
+  <nav>
+    <a href="/dashboard" aria-label="forecastr logo" class="logo">
+      <img src="/images/logo2.png" class="logo" alt="logo" width="140" height="49"/>
+    </a>
+    <button class="toggle-mob-menu" aria-expanded="false" aria-label="open menu">
+      <svg width="20" height="20" aria-hidden="true">
+        <use xlink:href="#down"></use>
+      </svg>
+    </button>
+
+    <ul class="admin-menu">
+          <li class="menu-heading">
+            <h3>Admin</h3>
+          </li>
+          <li>
+            <a href="/api/admin/admins">
+              <svg><use xlink:href="#pages"></use></svg>
+              <span>Adminlar</span>
+            </a>
+          </li>
+          <li>
+            <a href="/api/users/all">
+              <svg><use xlink:href="#users"></use></svg>
+              <span>Foydalanuvchilar</span>
+            </a>
+          </li>
+          <li>
+            <a href="/api/products/all">
+              <svg>
+                <use xlink:href="#collection"></use>
+              </svg>
+              <span>Mahsulotlar</span>
+            </a>
+          </li>
+          <li>
+            <a href="/orders">
+              <svg>
+                <use xlink:href="#collection"></use>
+              </svg>
+              <span>Buyurtmalar</span>
+            </a>
+          </li>
+          <li>
+            <a href="/api/categories/all">
+              <svg>
+                <use xlink:href="#collection"></use>
+              </svg>
+              <span>Kategoriyalar</span>
+            </a>
+          </li>
+          <li class="menu-heading">
+            <h3>Sozlamalar</h3>
+          </li>
+          <li>
+            <a href="/profil">
+              <svg><use xlink:href="#options"></use></svg>
+              <span>Profil</span>
+            </a>
+          </li>
+          <li>
+            <a href="/api/auth/logout">
+              <i class="fa fa-sign-in-alt me-2"></i>
+              <span style="margin-left: 12px;">Chiqish</span>
+            </a>
+          </li>
+          <li>
+            <div class="switch">
+              <input type="checkbox" id="mode" checked />
+              <label for="mode">
+                <span></span>
+                <span>Dark</span>
+              </label>
+            </div>
+            <button
+              class="collapse-btn"
+              aria-expanded="true"
+              aria-label="collapse menu"
+            >
+              <svg aria-hidden="true">
+                <use xlink:href="#collapse"></use>
+              </svg>
+              <span>Collapse</span>
+            </button>
+          </li>
+        </ul>
+  </nav>
+</header>
+
+<svg style="display:none;">
+  <symbol id="logo" viewBox="0 0 140 59">
+    <!-- SVG paths bu yerga joylanadi, kod juda uzun bo‘lgani uchun qisqartirdim -->
+  </symbol>
+</svg>
+
+<!-- Dashboard kontenti shu yerda bo‘ladi -->
+<main class="dashboard-main">
+  <h1>Dashboardga xush kelibsiz!</h1>
+  <!-- Qo‘shimcha kontent joylashtirishingiz mumkin -->
+</main>
+
+{{{body}}}
+</body>
+</html>
