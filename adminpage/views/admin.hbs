@@ -21,7 +21,7 @@
   </head>
 
   <body>
-    <svg style="display:none;">
+    <svg style="display:none;" >
       <symbol id="logo" viewBox="0 0 140 59">
         <g>
           <path
@@ -159,7 +159,6 @@
         />
       </symbol>
     </svg>
-
     <header class="page-header">
       <nav>
         <a href="/admin" aria-label="forecastr logo" class="logo">
@@ -261,22 +260,22 @@
 
     <section class="page-content">
       <section class="search-and-user">
-        <form>
-          <input type="search" placeholder="Search Pages..." />
-          <button type="submit" aria-label="submit form">
-            <svg aria-hidden="true">
-              <use xlink:href="#search"></use>
-            </svg>
-          </button>
-        </form>
-        <div class="admin-profile">
-          <div class="notifications">
-            <svg>
-              <use xlink:href="#users"></use>
-            </svg>
-          </div>
+      <form>
+        <input type="search" placeholder="Search Pages...">
+        <button type="submit" aria-label="submit form">
+          <svg aria-hidden="true">
+            <use xlink:href="#search"></use>
+          </svg>
+        </button>
+      </form>
+      <div class="admin-profile">
+        <div class="notifications" onclick="window.location.href='/api/admin/profil'">
+          <svg>
+            <use xlink:href="#users"></use>
+          </svg>
         </div>
-      </section>
+      </div>
+    </section>
       <!-- <section class="grid"> -->
       <div class="container">
         <h1 style="margin-left: 30px">Adminlar</h1>
