@@ -1,3 +1,9 @@
+document.querySelectorAll(".close").forEach(closeBtn => {
+  closeBtn.addEventListener("click", () => {
+    closeBtn.closest(".modal-overlay").style.display = "none";
+  });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   const createForm = document.getElementById('productForm');
   const editForm = document.getElementById('productEdit');

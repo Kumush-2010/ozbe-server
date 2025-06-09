@@ -255,8 +255,10 @@
 
 <!-- Create Product Modal -->
 <div class="modal-overlay" id="createProductModal">
-  <div class="modal">
-    <h2>Yangi mahsulot qo‘shish</h2>
+  <div class="modal" style="margin: 85px auto;">
+    <div> <span class="close">&times;</span>
+    <h2>Yangi mahsulot qo‘shish</h2></div>
+       
 <form id="productForm" enctype="multipart/form-data">
     <label>Nomi:</label>
     <input type="text" id="nameCreate" name="name" />
@@ -284,8 +286,6 @@
 
     <div class="modal-buttons">
     <button type="submit" class="save-btn" id="submitButton">Qo‘shish</button>
-    <div id="formError" class="error"></div>
-      <button class="close-btn" onclick="closeProductModal()">Bekor qilish</button>
     </div>
 </form>
   </div>
@@ -293,7 +293,8 @@
 
 <!-- Edit Product Modal -->
 <div class="modal-overlay" id="editProductModal">
-  <div class="modal">
+  <div class="modal"style="margin: 85px auto;">
+        <span class="close">&times;</span>
     <h2>Mahsulotni tahrirlash</h2>
     <form id="productEdit" enctype="multipart/form-data">
       <label for="nameEdit">Nomi:</label>
@@ -323,8 +324,6 @@
 
       <div class="modal-buttons">
         <button type="submit" class="save-btn" id="submitEditBtn">Saqlash</button>
-        <div id="formError" class="error"></div>
-        <button type="button" class="close-btn" onclick="closeEditProductModal()">Bekor qilish</button>
       </div>
     </form>
   </div>

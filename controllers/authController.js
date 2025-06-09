@@ -12,39 +12,12 @@ const generateToken = (user) => {
   );
 };
 
-// POST /api/auth/register
-exports.register = async (req, res) => {
-  try {
-    const { name, email, password } = req.body;
-
-    // Email bandligini tekshirish
-    const existingUser = await User.findOne({ email });
-    if (existingUser)
-      return res.status(400).json({ message: "Email allaqachon band" });
-
-    const user = await User.create({ name, email, password });
-    const token = generateToken(user);
-
-    res.status(201).json({
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-      token,
-    });
-  } catch (err) {
-    res.status(500).json({ message: "Ro‘yxatdan o‘tishda xatolik" });
-  }
-};
 
 exports.loginPage = (req, res) => {
     return res.render('login', { layout: false });
 }
 
 // admin login
-// controllers/authController.js
 
 exports.loginAdmin = async (req, res) => {
   const { email, password } = req.body;
