@@ -3,7 +3,6 @@ const router = express.Router();
 const {
   createCategory,
   getAllCategories,
-  updateCategory,
   deleteCategory,
   categoriesPage,
 } = require("../controllers/categoryController");
@@ -11,6 +10,8 @@ const {
   authMiddleware
 } = require("../middleware/admin-access.middleware");
 const { roleAccessMiddleware } = require("../middleware/role-access.middleware.js")
+const multer = require("multer");
+const upload = multer({ storage: multer.memoryStorage() });
 
 router
 .get("/all", categoriesPage)
@@ -18,6 +19,7 @@ router
 .post(
   "/create",
   roleAccessMiddleware(["superadmin", "admin"]),
+   upload.single('image'),
   createCategory
 ) 
 .delete(
