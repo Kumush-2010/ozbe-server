@@ -255,7 +255,8 @@
                   <table>
                       <thead>
                           <tr>
-                              <th>Nomi</th>
+                             <th>Rasm</th>
+                              <th>Nomi</th> 
                               <th>ACTION</th>
                           </tr>
                       </thead>
@@ -268,26 +269,43 @@
 
 {{!-- Create --}}
 <div class="modal-overlay" id="categoryModal">
-      <div class="modal" style="margin: 330px auto;">
-        <span class="close">&times;</span>
-        <h2>Yangi kategoriya qo‘shish</h2>
-        <form id="addCategoryForm" action="/api/categories/create" method="POST" style="margin-top: 15px;">
-          <label for="categoryName">Kategoriya Nomi:</label>
-  <input
-    type="text"
-    id="categoryName"
-    name="name"
-    placeholder="Misol: Elektronika"
-    required
-  />
+  <div class="modal" style="margin: 300px auto;">
+    <span class="close">&times;</span>
+    <h2>Yangi kategoriya qo‘shish</h2>
+    <form id="addCategoryForm" enctype="multipart/form-data" style="margin-top: 15px;">
+      <label for="categoryName">Kategoriya Nomi:</label>
+      <input
+        type="text"
+        id="categoryName"
+        name="name"
+        placeholder="Misol: Elektronika"
+        required
+      />
 
-  <div class="modal-buttons"> 
-  <button type="submit" class="create-admin-btn" style="margin-left: 300px" id="saveB" onclick="saveCategory()">Saqlash</button>
-        </div>
-        </form>
-        <p id="addCategoryMessage" style="color: red; margin-top: 0.5rem;"></p>
+      <label for="categoryImage" style="margin-top: 0.5rem; display: block;">
+        Kategoriya Rasm:
+      </label>
+      <input
+        type="file"
+        id="categoryImage"
+        name="image"
+        accept="image/*"
+      />
+
+      <div class="modal-buttons">
+        <button
+          type="submit"
+          class="create-admin-btn"
+          id="saveBtn"
+          style="margin-left: 300px"
+        >
+          Saqlash
+        </button>
       </div>
-    </div>
+    </form>
+    <p id="addCategoryMessage" style="color: red; margin-top: 0.5rem;"></p>
+  </div>
+</div>
 
 
   <script src="/adminpage/js/category.js"></script>

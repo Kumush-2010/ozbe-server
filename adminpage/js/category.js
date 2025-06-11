@@ -1,112 +1,92 @@
+document.addEventListener('DOMContentLoaded', () => {
+  // Kategoriyalarni yuklash
+fetch('/api/categories')
+  .then(res => {
+    if (!res.ok) throw new Error(`Server javobi xato: ${res.status}`);
+    return res.json();
+  })
+  .then(data => {
+    // 1) ‘data’ massivmi? Aks holda data.categories yoki data.data ni oling
+    const list = Array.isArray(data)
+      ? data
+      : Array.isArray(data.categories)
+        ? data.categories
+        : Array.isArray(data.data)
+          ? data.data
+          : [];
+
+    const tbody = document.getElementById('category-bar');
+    tbody.innerHTML = ''; // avval tozalaymiz
+
+    // 2) Endi doim massiv bo‘lib qoladi
+    list.forEach(cat => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>
+          <div class="category-image">
+            <img 
+              src="${cat.image || 'https://via.placeholder.com/60'}" 
+              alt="${cat.name}" 
+              class="avatar" 
+              style="width:40px; height:40px; object-fit:cover; border-radius:4px;"
+            >
+          </div>
+        </td>
+        <td>
+          <div class="category-name">${cat.name}</div>
+        </td>
+        <td>
+          <div class="action-buttons">
+            <button 
+              class="btn btn-delete" 
+              onclick="confirmDeleteCategory('${cat._id}')"
+            >
+              <i class="fas fa-trash"></i> Delete
+            </button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+  })
+  .catch(err => console.error('Xatolik:', err));
+
+});
 
 
- document.addEventListener('DOMContentLoaded', () => {
-    fetch('/api/categories')
-      .then(res => {
-        if (!res.ok) {
-          throw new Error(`Server javobi xato: ${res.status} ${res.statusText}`);
-        }
-        return res.json();
-      })
-      .then(data => {
-        const tbody = document.getElementById('category-bar');
-        tbody.innerHTML = ''; // Oldingi satrlarni tozalaymiz
-
-        const categories = data;
-        if (!Array.isArray(categories)) {
-          tbody.innerHTML = '<tr><td colspan="2" style="color: red;">Kategoriyalarni olishda format xatolik.</td></tr>';
-          return;
-        }
-
-        categories.forEach(category => {
-          const tr = document.createElement('tr');
-
-          const tdName = document.createElement('td');
-          tdName.textContent = category.name;
-
-          const tdAction = document.createElement('td');
-          tdAction.innerHTML = `
-            <div class="action-buttons">
-              <button class="btn btn-delete" onclick="confirmDeleteCategory('${category._id}')">
-                <i class="fas fa-trash"></i> Delete
-              </button>
-            </div>
-          `;
-
-          tr.appendChild(tdName);
-          tr.appendChild(tdAction);
-          tbody.appendChild(tr);
-        });
-      })
-    //   .catch(err => {
-    //     console.error('Xatolik:', err);
-    //     const tbody = document.getElementById('category-bar');
-    //     tbody.innerHTML = '<tr><td colspan="2" style="color: red;">Kategoriyalarni yuklashda xatolik yuz berdi.</td></tr>';
-    //   });
-  });
-
-
+// Yangi kategoriya qo‘shish modalini ochish
 function createCategory() {
-  const overlay = document.getElementById('categoryModal');
-  const input = document.getElementById('categoryName');
-
-  overlay.style.display = 'flex';
-
-  input.value = '';
-  
-  delete document.getElementById('saveBtn').dataset.id;
+  document.getElementById('addCategoryForm').reset();
+  document.getElementById('addCategoryMessage').textContent = '';
+  document.getElementById('categoryModal').style.display = 'flex';
 }
 
-function closeModal() {
-  document.getElementById('modalOverlay').style.display = 'none';
-}
-
-document.querySelectorAll(".close").forEach(closeBtn => {
-  closeBtn.addEventListener("click", () => {
-    closeBtn.closest(".modal-overlay").style.display = "none";
-  });
-})
-
-
-function editCategory(id) {
-  document.getElementById('categoryEdit').style.display = 'block';
-   const saveBtn = document.getElementById('saveBtn');
-  saveBtn.dataset.id = id;
-}
-
-
-document.getElementById('saveBtn')?.addEventListener('click', function (e) {
+// Form submit: har doim POST /api/categories/create
+document.getElementById('addCategoryForm').addEventListener('submit', function(e) {
   e.preventDefault();
+  const msg = document.getElementById('addCategoryMessage');
+  msg.textContent = '';
 
-  const id = e.currentTarget.dataset.id; 
-  console.log("Yuborilayotgan ID:", id); 
-
-  const updatedCategory = {
-    name: document.getElementById('categoryName').value,
-  };
-
-
-  fetch(`/api/categories/edit/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(updatedCategory)
+  const formData = new FormData(this);
+  fetch('/api/categories/create', {
+    method: 'POST',
+    body: formData
   })
     .then(res => {
-      if (!res.ok) throw new Error(`HTTP xatolik: ${res.status}`);
+      if (!res.ok) throw new Error(`HTTP xato: ${res.status}`);
       return res.json();
     })
-    .then(data => {
-      alert("Kategoriya ma'lumotlari muvaffaqiyatli yangilandi!");
-      document.getElementById('categoryEdit').style.display = 'none';
+    .then(() => {
+      alert('Kategoriya qo‘shildi!');
+      document.getElementById('categoryModal').style.display = 'none';
       location.reload();
     })
     .catch(err => {
-      console.error("Xatolik:", err);
-      alert("Yangilashda muammo yuz berdi");
+      console.error(err);
+      msg.textContent = 'Saqlashda muammo yuz berdi.';
     });
 });
+
 
 
  function confirmDeleteCategory(categoryId) {
