@@ -11,7 +11,7 @@ exports.productsPage = async (req, res) => {
 // POST /api/products
 exports.createProduct = async (req, res) => {
    try {
-    const { name, description, price, countInStock, category_id } = req.body;
+    const { name, color, size, description, price, countInStock, category_id } = req.body;
 
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ message: 'Iltimos, kamida bitta rasm tanlang.' });
@@ -43,6 +43,8 @@ exports.createProduct = async (req, res) => {
     // Mahsulot MongoDBga saqlanmoqda
     const newProduct = await Product.create({
       name,
+      color,
+      size,
       description,
       price,
       countInStock,
