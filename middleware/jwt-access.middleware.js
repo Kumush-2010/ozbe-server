@@ -13,12 +13,14 @@ exports.jwtAccessMiddleware = function (req, res, next) {
 const token = req.cookies.token;
 
         if (!token) {
-            return res.status(401).json({ message: "Token is missing" });
+            // return res.status(401).json({ message: "Token is missing" });
+            return res.rejirect('/api/auth/login')
         }
 
         const user = jwt.verify(token, process.env.JWT_SECRET);
         req.user = user;
         next();
+    
     } catch (error) {
         console.log(error);
 
