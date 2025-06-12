@@ -255,7 +255,7 @@
 
 <!-- Create Product Modal -->
 <div class="modal-overlay" id="createProductModal">
-  <div class="modal" style="margin: 85px auto;">
+  <div class="modal" style="margin: 15px auto;">
     <div> <span class="close">&times;</span>
     <h2>Yangi mahsulot qo‘shish</h2></div>
        
@@ -263,12 +263,41 @@
     <label>Nomi:</label>
     <input type="text" id="nameCreate" name="name" />
 
-      <label>Rangi:</label>
-      <input type="text" id="colorCreate" name="color" />
+ <label>Rangi:</label>
+<select id="colorCreate" name="color" required>
+  <option value="">— Rang tanlang —</option>
+  <option value="oq">Oq</option>
+  <option value="qora">Qora</option>
+  <option value="ko'k">Ko'k</option>
+  <option value="pushti">Pushti</option>
+  <option value="qizil">Qizil</option>
+  <option value="sariq">Sariq</option>
+</select>
 
-      <label>O'lchami:</label>
-      <input type="text" id="sizeCreate" name="size" />
-
+<label>O'lchami:</label>
+<select id="sizeCreate" name="size" required>
+  <option value="">— O‘lcham tanlang —</option>
+  <option value="XXL">XXL</option>
+  <option value="L">L</option>
+  <option value="S">S</option>
+  <option value="M">M</option>
+  <option value="XL">XL</option>
+  <option value="XXXL">XXXL</option>
+  <option value="6XL">6XL</option>
+  <option value="4XL">4XL</option>
+  <option value="XS">XS</option>
+  <option value="8XL">8XL</option>
+  <option value="XXS">XXS</option>
+  <option value="5XL">5XL</option>
+  <option value="7XL">7XL</option>
+  <option value="XXXS">XXXS</option>
+  <option value="42">42</option>
+  <option value="40">40</option>
+  <option value="L/XL">L/XL</option>
+  <option value="S/M">S/M</option>
+  <option value="Freesize">Freesize</option>
+  <option value="Ovesize">Ovesize</option>
+</select>
     <label>Ma'lumot:</label>
     <input id="descriptionCreate" name="description"/>
 
@@ -299,18 +328,49 @@
 
 <!-- Edit Product Modal -->
 <div class="modal-overlay" id="editProductModal">
-  <div class="modal"style="margin: 85px auto;">
+  <div class="modal"style="margin: 15px auto;">
         <span class="close">&times;</span>
     <h2>Mahsulotni tahrirlash</h2>
     <form id="productEdit" enctype="multipart/form-data">
       <label for="nameEdit">Nomi:</label>
       <input type="text" id="nameEdit" name="name" required />
 
-      <label for="colorEdit">Rangi:</label>
-      <input type="text" id="colorEdit" name="color" required/>
+     <label>Rangi:</label>
+<select id="colorEdit" name="color" required>
+  <option value="">— Rang tanlang —</option>
+  <option value="oq">Oq</option>
+  <option value="qora">Qora</option>
+  <option value="ko'k">Ko'k</option>
+  <option value="pushti">Pushti</option>
+  <option value="qizil">Qizil</option>
+  <option value="sariq">Sariq</option>
+</select>
 
-      <label for="sizeEdit">O'lchami:</label>
-      <input type="text" id="sizeEdit" name="size" required/>
+<label>O'lchami:</label>
+<select id="sizeEdit" name="size" required>
+  <option value="">— O‘lcham tanlang —</option>
+  <option value="XXL">XXL</option>
+  <option value="L">L</option>
+  <option value="S">S</option>
+  <option value="M">M</option>
+  <option value="XL">XL</option>
+  <option value="XXXL">XXXL</option>
+  <option value="6XL">6XL</option>
+  <option value="4XL">4XL</option>
+  <option value="XS">XS</option>
+  <option value="8XL">8XL</option>
+  <option value="XXS">XXS</option>
+  <option value="5XL">5XL</option>
+  <option value="7XL">7XL</option>
+  <option value="XXXS">XXXS</option>
+  <option value="42">42</option>
+  <option value="40">40</option>
+  <option value="L/XL">L/XL</option>
+  <option value="S/M">S/M</option>
+  <option value="Freesize">Freesize</option>
+  <option value="Ovesize">Ovesize</option>
+</select>
+
 
       <label for="descriptionEdit">Ma'lumot:</label>
       <input id="descriptionEdit" name="description"></input>
@@ -322,15 +382,15 @@
       <input type="number" id="priceEdit" name="price" min="0" step="0.01" required />
 
       <label for="categorySelectEdit">Kategoriya:</label>
-      <select id="categorySelectEdit" name="category_id" required>
+      <select id="categorySelectEdit" name="category" required>
         <option value="">— Kategoriya tanlang —</option>
       </select>
 
       {{!-- <label for="productImagesEdit">Yangi rasmlar yuklash (ixtiyoriy, bir nechta tanlang):</label>
       <input type="file" id="productImageEdit" name="images" multiple accept="image/*" /> --}}
 <label>Rasmlar yuklash (bittadan tanlab ko‘paytirish):</label>
-<input type="file" id="imageInputCreate" accept="image/*">
-<div id="previewContainerCreate" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
+<input type="file" id="imageInputEdit" accept="image/*">
+<div id="previewContainerEdit" style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;"></div>
 
 
 

@@ -63,10 +63,11 @@ exports.createProduct = async (req, res) => {
 // GET /api/products
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find().populate('category', 'name')
+    const products = await Product.find().populate('category')
       .exec();
     res.json(products);
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: 'Xatolik' });
   }
 };
@@ -91,7 +92,7 @@ try {
     if (!id) {
       return res.status(400).json({ message: "Product ID yo'q" });
     }
-    const { name, description, price, countInStock, category_id } = req.body;
+    const { name, description, price, countInStock, category_id, size, color } = req.body;
 
     const product = await Product.findById(id);
     if (!product) {
@@ -100,6 +101,8 @@ try {
 
     const updateData = {
       name,
+      size,
+      color,
       description,
       price,
       countInStock,
@@ -107,7 +110,7 @@ try {
     };
 
     // Agar yangi rasm(lar) yuborilgan bo‘lsa
-    if (req.files && req.files.length > 0) {
+    if (req.files || req.files.length > 0) {
       const bucketName = 'images';
       const uploadedUrls = [];
 
@@ -152,11 +155,12 @@ try {
       }
 
       updateData.images = uploadedUrls;
+      // Yangilash
+      const updatedProduct = await Product.findByIdAndUpdate(id, updateData,  { new: true }).populate('category');
+      res.status(200).json({ message: 'Mahsulot yangilandi!', product: updatedProduct });
+      
     }
-
-    // Yangilash
-    const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true }).populate('category');
-    res.status(200).json({ message: 'Mahsulot yangilandi!', product: updatedProduct });
+    
 
   } catch (error) {
     console.error("Server xatoligi:", error);
