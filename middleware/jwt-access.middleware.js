@@ -14,7 +14,7 @@ const token = req.cookies.token;
 
         if (!token) {
             // return res.status(401).json({ message: "Token is missing" });
-            return res.rejirect('/api/auth/login')
+            return res.redirect('/api/auth/login')
         }
 
         const user = jwt.verify(token, process.env.JWT_SECRET);
