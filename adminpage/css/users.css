@@ -390,7 +390,7 @@ tr:last-child td {
 }
 
 .modal h2 {
-    margin-top: 0;
+    margin-top: -35px;
 }
 
 .modal input, .modal select {

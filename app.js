@@ -16,13 +16,14 @@ const Router = require('express').Router();
 
 
 // Routes
-Router.use("/auth", authRoutes);
-Router.use('/admin', adminRoutes); 
-Router.use('/users', usersRoutes)
-Router.use('/categories', categoryRoutes);
-Router.use('/products', productRoutes);
-Router.use('/cart', cartRoutes);
-Router.use('/orders', orderRoutes);
+Router
+.use("/auth", authRoutes)
+.use('/admin', adminRoutes)
+.use('/users', usersRoutes)
+.use('/categories', categoryRoutes)
+.use('/products', productRoutes)
+.use('/cart', cartRoutes)
+.use('/orders', orderRoutes)
 
 
 module.exports = Router;

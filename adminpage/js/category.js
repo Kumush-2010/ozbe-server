@@ -53,6 +53,11 @@ fetch('/api/categories')
 
 });
 
+document.querySelectorAll(".close").forEach((closeBtn) => {
+  closeBtn.addEventListener("click", () => {
+    closeBtn.closest(".modal-overlay").style.display = "none";
+  });
+});
 
 // Yangi kategoriya qo‘shish modalini ochish
 function createCategory() {
