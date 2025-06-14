@@ -62,7 +62,7 @@ app.get("/admin", jwtAccessMiddleware, (req, res) => {
 // API routes
 app.use("/api", Router);
 
-// ⛔️ 404 middleware — OXIRIDA!
+
 app.use((req, res) => {
   res.status(404).render("404", { layout: false });
 });

@@ -12,11 +12,6 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 const fs = require("fs");
 
 const storage = multer.memoryStorage();
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => cb(null, "uploads/"),
-//   filename: (req, file, cb) =>
-//     cb(null, Date.now() + path.extname(file.originalname)),
-// });
 const upload = multer({ storage });
 
 const adminsPage = async (req, res) => {
@@ -110,28 +105,22 @@ const adminEdit = async (req, res) => {
     const { adminname, birth, email, phone, role, jins, password } = req.body;
     const updateData = { adminname, birth, email, phone, role, jins };
 
-    // Agar yangi rasm yuborilgan bo‘lsa:
     if (req.file) {
       const bucketName = "images";
       const newFileName = `admins/${Date.now()}_${req.file.originalname}`;
 
-      // 1) Eski rasmni o‘chirish (agar bor bo‘lsa)
       if (admin.image && admin.image.includes(`storage/v1/object/public/${bucketName}/`)) {
-        // URL: https://xyz.supabase.co/storage/v1/object/public/images/admins/...png
         const oldFilePath = admin.image.split(`${bucketName}/`)[1]; 
-        // ➔ oldFilePath = "admins/162xxxx_avatar.png"
         if (oldFilePath) {
           const { error: removeError } = await supabase.storage
             .from(bucketName)
             .remove([oldFilePath]);
           if (removeError) {
             console.error("Supabase remove error:", removeError.message);
-            // Eski rasm o‘chmasa ham davom etamiz
           }
         }
       }
 
-      // 2) Yangi rasmni yuklash
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from(bucketName)
         .upload(newFileName, req.file.buffer, {
@@ -145,7 +134,6 @@ const adminEdit = async (req, res) => {
         return res.status(500).json({ message: "Rasm yuklashda xatolik yuz berdi" });
       }
 
-      // 3) Yangi rasm public URL
       const { data: { publicUrl }, error: urlError } = supabase.storage
         .from(bucketName)
         .getPublicUrl(newFileName);
@@ -159,12 +147,10 @@ const adminEdit = async (req, res) => {
         console.log("👀 YANGI UPDATE DATA:", updateData);
     }
 
-    // Agar parol o‘zgargan bo‘lsa:
     if (password && password.trim()) {
       updateData.password = await bcrypt.hash(password, 10);
     }
 
-    // Ma’lumotlarni yangilash
     const updatedAdmin = await Admin.findByIdAndUpdate(id, updateData, { new: true });
     console.log("👀 UPDATED ADMIN:", updatedAdmin);
     return res.status(200).json({
@@ -176,8 +162,6 @@ const adminEdit = async (req, res) => {
     return res.status(500).json({ error: "Server xatosi yuz berdi." });
   }
 };
-
-
 
 
 const adminDelete = async (req, res) => {
@@ -213,9 +197,8 @@ const getAdminStats = async (req, res) => {
       0
     );
 
-    // 🔢 So‘nggi 7 kunlik buyurtmalar (kunlar bo‘yicha guruhlash)
     const last7Days = new Date();
-    last7Days.setDate(last7Days.getDate() - 6); // bugun + oldingi 6 kun
+    last7Days.setDate(last7Days.getDate() - 6);
 
     const recentOrders = await Order.aggregate([
       {
