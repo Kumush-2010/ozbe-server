@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Load Categories ---
   function loadCategories() {
-    fetch("/api/categories")
+    fetch("https://www.dashboard.bob.uz/api/categories")
       .then((res) => res.json())
       .then((data) => {
         const createSelect = document.getElementById("categorySelectCreate");
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Load Products ---
   function loadProducts() {
-    fetch("/api/products")
+    fetch("https://www.dashboard.bob.uz/api/products")
       .then((res) => res.json())
       .then((data) => {
         tbody.innerHTML = "";
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     try {
-      const res = await fetch("/api/products/create", {
+      const res = await fetch("https://www.dashboard.bob.uz/api/products/create", {
         method: "POST",
         body: formData,
       });
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     try {
-      const res = await fetch(`/api/products/edit/${id}`, {
+      const res = await fetch(`https://www.dashboard.bob.uz/api/products/edit/${id}`, {
         method: "PUT",
         body: formData,
       });
