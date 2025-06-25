@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Load Categories ---
   function loadCategories() {
-    fetch("http://localhost:4000/api/categories")
+    fetch("/api/categories")
       .then((res) => res.json())
       .then((data) => {
         const createSelect = document.getElementById("categorySelectCreate");
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Load Products ---
   function loadProducts() {
-    fetch("http://localhost:4000/api/products")
+    fetch("/api/products")
       .then((res) => res.json())
       .then((data) => {
         tbody.innerHTML = "";
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     try {
-      const res = await fetch("http://localhost:4000/api/products/create", {
+      const res = await fetch("/api/products/create", {
         method: "POST",
         body: formData,
       });
@@ -245,7 +245,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     try {
-      const res = await fetch(`http://localhost:4000/api/products/edit/${id}`, {
+      const res = await fetch(`/api/products/edit/${id}`, {
         method: "PUT",
         body: formData,
       });
@@ -305,7 +305,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!confirm("🗑 Ushbu mahsulotni o‘chirmoqchimisiz?")) return;
     try {
       const res = await fetch(
-        `http://localhost:4000/api/products/delete/${id}`,
+        `/api/products/delete/${id}`,
         {
           method: "DELETE",
         }
