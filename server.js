@@ -31,7 +31,10 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({ 
+  origin: ["https://www.dashboard.bob.uz", "http://localhost:4000"],
+  credentials: true
+}));
 app.use(flash());
 
 app.engine("hbs", hbs.engine);
@@ -54,7 +57,7 @@ app.use(session({
 app.get("/", (req, res) => {
   res.redirect("/admin");
 });
-
+   
 app.get("/admin", jwtAccessMiddleware, (req, res) => {
   return res.render("dashboard", { title: "Admin Panel", layout: false });
 });
