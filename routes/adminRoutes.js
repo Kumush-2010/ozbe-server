@@ -8,12 +8,12 @@ const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 
 router
-.get('/admins', adminsPage)
-.get('/', allAdmins )
+.get('/admins', adminAccessMiddleware, roleAccessMiddleware(["admin", "superadmin"]), adminsPage)
+.get('/', adminAccessMiddleware, roleAccessMiddleware(["admin", "superadmin"]), allAdmins )
 .get('/create', (req, res) => {
   res.render('admin-create'); 
 })
-.post('/create', upload.single('image'), adminCreate)
+.post('/create',adminAccessMiddleware, roleAccessMiddleware(["admin", "superadmin"]), upload.single('image'), adminCreate)
 .put(
   '/edit/:id', 
   adminAccessMiddleware,
@@ -29,10 +29,12 @@ router
 )
 .get(
   '/profil',
+  adminAccessMiddleware, roleAccessMiddleware(["admin", "superadmin"]),
   adminProfil
 )
 .post(
   "/profil/:id", 
+  adminAccessMiddleware, roleAccessMiddleware(["admin", "superadmin"]),
   upload.single('image'),
   updateAdminProfile
 )
